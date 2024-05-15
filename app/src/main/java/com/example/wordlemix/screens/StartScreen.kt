@@ -12,12 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import com.example.wordlemix.navigation.ScreenRoutes
 import com.example.wordlemix.reusableItems.Headline
 import com.example.wordlemix.reusableItems.button
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun StartScreen() {
+fun StartScreen(navController: NavController) {
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -26,21 +28,20 @@ fun StartScreen() {
         Scaffold(
             modifier = Modifier.fillMaxSize()
         ) {
-        StartScreenStructure()
+        StartScreenStructure(navController)
         }
     }
 }
 
-@Preview
 @Composable
-fun StartScreenStructure() {
+fun StartScreenStructure(navController: NavController) {
     Column(modifier = Modifier
         .fillMaxSize()
         .background(color = Color.Gray),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
         Headline(headlineText = "WordleMix")
-        button(buttonText = "Start Game")
+        button(buttonText = "Start Game", onClick = { navController.navigate(ScreenRoutes.GameScreen.route) })
         button(buttonText = "Settings")
     }
 }
