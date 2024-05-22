@@ -1,11 +1,14 @@
 package com.example.wordlemix.reusableItems
 
 import androidx.compose.animation.expandHorizontally
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -26,11 +29,11 @@ fun button(buttonText: String, onClick: () -> Unit = {}) {
             disabledElevation = 0.dp
         ),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Blue,
-            contentColor = Color.White
+            containerColor = Color(0xFFF8BE85),
+            contentColor = Color(0xFFE5EBEF)
         )
     ) {
-        Text(text = buttonText)
+        Text(text = buttonText, style = MaterialTheme.typography.bodySmall)
     }
 }
 
