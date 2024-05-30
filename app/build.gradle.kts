@@ -51,6 +51,7 @@ android {
 
 dependencies {
 
+    implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
     val nav_version = "2.7.7"
 
 

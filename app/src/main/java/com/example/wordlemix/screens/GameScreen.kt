@@ -49,40 +49,5 @@ fun GameScreenStructure() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(50.dp)
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(text = "first")
-            Text(text = "second")
-            Text(text = "third")
-            Text(text = "fourth")
-            Text(text = "fifth")
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(text = "first")
-            Text(text = "second")
-            Text(text = "third")
-            Text(text = "fourth")
-            Text(text = "fifth")
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(text = "first")
-            Text(text = "second")
-            Text(text = "third")
-            Text(text = "fourth")
-            Text(text = "fifth")
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(text = "first")
-            Text(text = "second")
-            Text(text = "third")
-            Text(text = "fourth")
-            Text(text = "fifth")
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            Text(text = "first")
-            Text(text = "second")
-            Text(text = "third")
-            Text(text = "fourth")
-            Text(text = "fifth")
         }
     }
-}
