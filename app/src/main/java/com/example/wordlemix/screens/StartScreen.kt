@@ -31,7 +31,7 @@ fun StartScreen() {
     }
 }
 
-@Preview
+
 @Composable
 fun StartScreenStructure() {
     Column(modifier = Modifier
