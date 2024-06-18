@@ -31,14 +31,13 @@ fun GameScreen(navController: NavController, route: String) {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                topAppBar.TopAppBar(titleText = "Game", icon = false, navController = navController)
+                topAppBar.TopAppBar(titleText = "Game", icon = true, navController = navController)
             }
         ) {
         }
     }
 }
 
-@Preview
 @Composable
 fun GameScreenStructure() {
     Column(
