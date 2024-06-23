@@ -20,6 +20,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,11 +37,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.wordlemix.appbars.AppBars
+import com.example.wordlemix.game.GameLogic
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun GameScreen(navController: NavController, route: String) {
     val topAppBar = AppBars()
+    val gameLogic = GameLogic()
+    val word = gameLogic.chooseRandomWord()
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -53,13 +57,14 @@ fun GameScreen(navController: NavController, route: String) {
             }
 
         ) {
-            GameScreenStructure()
+            GameScreenStructure(gameLogic, word)
         }
     }
 }
 
 @Composable
-fun GameScreenStructure() {
+fun GameScreenStructure(gameLogic: GameLogic, word: String) {
+    var numberOfTries by remember { mutableIntStateOf(0) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,18 +75,34 @@ fun GameScreenStructure() {
     ) {
         Column(modifier = Modifier.padding(top = 60.dp)) {
             val textFieldList = textfieldTempl(true)
-            textfieldTempl(false)
-            textfieldTempl(false)
-            textfieldTempl(false)
-            textfieldTempl(false)
-            textfieldTempl(false)
+            val textFieldList2 = textfieldTempl(true)
+            val textFieldList3 = textfieldTempl(true)
+            val textFieldList4 = textfieldTempl(true)
+            val textFieldList5 = textfieldTempl(true)
+            val textFieldList6 = textfieldTempl(true)
+
+            val list = mutableListOf<SnapshotStateList<String>>()
+            list.add(textFieldList)
+            list.add(textFieldList2)
+            list.add(textFieldList3)
+            list.add(textFieldList4)
+            list.add(textFieldList5)
+            list.add(textFieldList6)
+
             Divider(modifier = Modifier.padding(10.dp),
                 color = Color.Black,
                 thickness = 2.dp)
-            Button(onClick = {
-                println("First Word: ${textFieldList[0]}${textFieldList[1]}${textFieldList[2]}${textFieldList[3]}${textFieldList[4]} ")
+            Button(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                onClick = {
+                //println("First Word: ${textFieldList[0]}${textFieldList[1]}${textFieldList[2]}${textFieldList[3]}${textFieldList[4]} ")
+                    println("Word: ${list[numberOfTries][0]}${list[numberOfTries][1]}${list[numberOfTries][2]}${list[numberOfTries][3]}${list[numberOfTries][4]}")
+                    val guess: String = list[numberOfTries][0] + list[numberOfTries][1] + list[numberOfTries][2] + list[numberOfTries][3] + list[numberOfTries][4]
+                    println(word)
+                    println(gameLogic.isCorrectWord(word, guess))
+                    numberOfTries++
             }) {
-                Text("Print Word")
+                Text("Guess")
             }
         }
     }
