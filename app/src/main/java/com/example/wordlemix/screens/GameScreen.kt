@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -23,6 +24,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -67,33 +69,38 @@ fun GameScreenStructure() {
         verticalArrangement = Arrangement.spacedBy(50.dp)
     ) {
         Column(modifier = Modifier.padding(top = 60.dp)) {
-            TextfieldTempl()
-            TextfieldTempl()
-            TextfieldTempl()
-            TextfieldTempl()
-            TextfieldTempl()
-            TextfieldTempl()
+            val textFieldList = textfieldTempl(true)
+            textfieldTempl(false)
+            textfieldTempl(false)
+            textfieldTempl(false)
+            textfieldTempl(false)
+            textfieldTempl(false)
             Divider(modifier = Modifier.padding(10.dp),
                 color = Color.Black,
                 thickness = 2.dp)
+            Button(onClick = {
+                println("First Word: ${textFieldList[0]}${textFieldList[1]}${textFieldList[2]}${textFieldList[3]}${textFieldList[4]} ")
+            }) {
+                Text("Print Word")
+            }
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TextfieldTempl() {
+fun textfieldTempl(isEnabled: Boolean): SnapshotStateList<String> {
     var text by remember { mutableStateOf(TextFieldValue("")) }
+    val textFieldList = remember {
+        mutableStateListOf("", "", "", "", "")
+    }
     Row {
-        val textFieldList = remember {
-            mutableStateListOf("", "", "", "", "")
-        }
-
         textFieldList.forEachIndexed { index, text ->
-          TextField(
+           TextField(
                 textStyle = TextStyle(color = Color.Black, fontSize = 30.sp, textAlign = TextAlign.Center),
                 colors = TextFieldDefaults.textFieldColors(containerColor = Color.LightGray),
                 value = text,
+                enabled = isEnabled,
                 onValueChange = { newText -> if (newText.length <= 1){
                     textFieldList[index] = newText
                 }
@@ -104,6 +111,8 @@ fun TextfieldTempl() {
                     .padding(top = 10.dp, start = 8.dp, end = 8.dp),
 
             )
+        }
+
    }
 
   //ToDo: Problem lösen -> wie greifen wir auf einen einzelnen Textfieldindex zu
@@ -126,4 +135,5 @@ fun TextfieldTempl() {
                 .padding(8.dp)
         )*/
     }
+    return textFieldList
 }
