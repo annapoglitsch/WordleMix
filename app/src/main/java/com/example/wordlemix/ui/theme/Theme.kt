@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -42,6 +43,21 @@ private val LightColorScheme = lightColorScheme(
 
 )
 
+private val DarkColorPalette = darkColorScheme(
+    primary = ThemeColors.Night.primary,
+    onPrimary = ThemeColors.Night.text,
+    surface = ThemeColors.Night.surafce,
+    background = ThemeColors.Night.bacground
+)
+
+private val LightColorPalette = lightColorScheme(
+    primary = ThemeColors.Day.primary,
+    onPrimary = ThemeColors.Day.text,
+    surface = ThemeColors.Day.surafce,
+    background = ThemeColors.Day.bacground
+)
+
+
 
 @Composable
 fun WordleMixTheme(
@@ -58,6 +74,7 @@ fun WordleMixTheme(
 
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
+
     }
     val view = LocalView.current
     if (!view.isInEditMode) {

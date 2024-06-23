@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -23,7 +22,12 @@ import com.example.wordlemix.reusableItems.button
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun StartScreen(navController: NavController, route: String) {
+fun StartScreen(
+    navController: NavController,
+    route: String,
+    darkTheme: Boolean,
+    onThemeUpdated: () -> Unit
+) {
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -32,23 +36,32 @@ fun StartScreen(navController: NavController, route: String) {
         Scaffold(
             modifier = Modifier.fillMaxSize()
         ) {
-        StartScreenStructure(navController)
+            StartScreenStructure(navController)
         }
     }
 }
 
 @Composable
 fun StartScreenStructure(navController: NavController) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(color = Color(0xFFAAD6F3))
-        .padding(top = 16.dp),
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0xFFAAD6F3))
+            .padding(top = 16.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally) {
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Headline(headlineText = "WordleMix")
         Spacer(modifier = Modifier.height(32.dp))
-        button(buttonText = "Start Game", onClick = { navController.navigate(ScreenRoutes.GameScreen.route) })
+        button(
+            buttonText = "Start Game",
+            onClick = { navController.navigate(ScreenRoutes.GameScreen.route) })
         Spacer(modifier = Modifier.height(20.dp))
-        button(buttonText = "Settings")
+        button(
+            buttonText = "Settings",
+            onClick = { navController.navigate(ScreenRoutes.SettingsScreen.route) })
     }
 }
+
+
+
