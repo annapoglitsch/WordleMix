@@ -134,6 +134,6 @@ fun textfieldTempl(isEnabled: Boolean): SnapshotStateList<String> {
                 .width(80.dp)
                 .padding(8.dp)
         )*/
-    }
+
     return textFieldList
 }
