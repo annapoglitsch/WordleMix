@@ -90,7 +90,7 @@ fun TextfieldTempl() {
         }
 
         textFieldList.forEachIndexed { index, text ->
-           var textUwu = TextField(
+          TextField(
                 textStyle = TextStyle(color = Color.Black, fontSize = 30.sp, textAlign = TextAlign.Center),
                 colors = TextFieldDefaults.textFieldColors(containerColor = Color.LightGray),
                 value = text,
@@ -104,8 +104,9 @@ fun TextfieldTempl() {
                     .padding(top = 10.dp, start = 8.dp, end = 8.dp),
 
             )
-            return textUwu
    }
+
+  //ToDo: Problem lösen -> wie greifen wir auf einen einzelnen Textfieldindex zu
 
         /*TextField(
             value = text,
