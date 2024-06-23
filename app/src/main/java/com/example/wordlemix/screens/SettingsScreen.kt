@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wordlemix.R
+import com.example.wordlemix.navigation.ScreenRoutes
 import com.example.wordlemix.reusableItems.AppBars
 
 
@@ -68,6 +70,9 @@ fun SettingsScreen(navController: NavController, route: String, darkTheme: Boole
             ) {
                 ThemeSwitcher(darkTheme = darkTheme,
                     onClick = onThemeUpdated)
+            }
+            Button(onClick = {navController.navigate(ScreenRoutes.ScoreBoardScreen.route) }) {
+                //ToDo: Manu ScoreBoard
             }
         }
     }

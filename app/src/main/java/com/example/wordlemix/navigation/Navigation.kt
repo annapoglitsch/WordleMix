@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wordlemix.screens.GameScreen
+import com.example.wordlemix.screens.ScoreBoard
 import com.example.wordlemix.screens.SettingsScreen
 import com.example.wordlemix.screens.StartScreen
 
@@ -27,6 +28,9 @@ fun Navigation() {
         }
         composable(route = ScreenRoutes.SettingsScreen.route){
             SettingsScreen(navController, ScreenRoutes.SettingsScreen.route, darkTheme = darkTheme, onThemeUpdated = {darkTheme = !darkTheme})
+        }
+        composable(route = ScreenRoutes.ScoreBoardScreen.route){
+            ScoreBoard(navController, ScreenRoutes.ScoreBoardScreen.route)
         }
     }
 }

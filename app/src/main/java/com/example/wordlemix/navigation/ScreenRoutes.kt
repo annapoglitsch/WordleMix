@@ -4,4 +4,5 @@ sealed class ScreenRoutes(val route: String) {
     data object StartScreen : ScreenRoutes("startScreen")
     data object GameScreen : ScreenRoutes("gameScreen")
     data object SettingsScreen : ScreenRoutes("settingsScreen")
+    data object ScoreBoardScreen : ScreenRoutes("scoreBoardScreen")
 }
