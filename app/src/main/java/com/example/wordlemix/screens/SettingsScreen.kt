@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -42,6 +43,7 @@ import androidx.navigation.NavController
 import com.example.wordlemix.R
 import com.example.wordlemix.navigation.ScreenRoutes
 import com.example.wordlemix.reusableItems.AppBars
+import com.example.wordlemix.reusableItems.button
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -70,9 +72,10 @@ fun SettingsScreen(navController: NavController, route: String, darkTheme: Boole
             ) {
                 ThemeSwitcher(darkTheme = darkTheme,
                     onClick = onThemeUpdated)
-            }
-            Button(onClick = {navController.navigate(ScreenRoutes.ScoreBoardScreen.route) }) {
-                //ToDo: Manu ScoreBoard
+                Spacer(modifier = Modifier.height(20.dp))
+                button(
+                    buttonText = "Scoreboard",
+                    onClick = { navController.navigate(ScreenRoutes.ScoreBoardScreen.route) })
             }
         }
     }
