@@ -120,6 +120,7 @@ fun ThemeSwitch(darkTheme: Boolean = false, content: @Composable () -> Unit) {
 }
 
 
+
 //ToDo: default background should be Color(0xFFAAD6F3) (lightmode)
 
 //followed this tutorial: https://www.youtube.com/watch?v=Nvphdmi-6qc
