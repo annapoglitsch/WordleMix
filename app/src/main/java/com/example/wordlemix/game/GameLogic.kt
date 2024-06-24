@@ -11,7 +11,7 @@ class GameLogic {
     val jsonString = jsonFile.readText()
     val gson = Gson()
     val wordObject: GuessWords = gson.fromJson(jsonString, GuessWords::class.java)*/
-    var words = listOf("APPLE", "CLOUD", "CREAM", "TOKYO")
+    var words = listOf("APPLE", "CLOUD", "SMART", "TOKYO")
     val MAX_ATTEMPTS = 5
 
     fun printWords() {

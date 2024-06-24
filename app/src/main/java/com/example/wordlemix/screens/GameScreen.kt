@@ -65,6 +65,12 @@ fun GameScreen(navController: NavController, route: String) {
 @Composable
 fun GameScreenStructure(gameLogic: GameLogic, word: String) {
     var numberOfTries by remember { mutableIntStateOf(0) }
+    val initialFontColor = listOf(Color.Black, Color.Black, Color.Black, Color.Black, Color.Black)
+    val initialBackgroundColor = listOf(Color.LightGray, Color.LightGray, Color.LightGray, Color.LightGray, Color.LightGray)
+    val fontColors = remember { mutableStateListOf(*initialFontColor.toTypedArray()) }
+    val backgroundColors = remember { mutableStateListOf(*initialBackgroundColor.toTypedArray()) }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -74,12 +80,12 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String) {
         verticalArrangement = Arrangement.spacedBy(50.dp)
     ) {
         Column(modifier = Modifier.padding(top = 60.dp)) {
-            val textFieldList = textfieldTempl(true)
-            val textFieldList2 = textfieldTempl(true)
-            val textFieldList3 = textfieldTempl(true)
-            val textFieldList4 = textfieldTempl(true)
-            val textFieldList5 = textfieldTempl(true)
-            val textFieldList6 = textfieldTempl(true)
+            val textFieldList = textfieldTempl(true, fontColors, backgroundColors)
+            val textFieldList2 = textfieldTempl(true, fontColors, backgroundColors)
+            val textFieldList3 = textfieldTempl(true, fontColors, backgroundColors)
+            val textFieldList4 = textfieldTempl(true, fontColors, backgroundColors)
+            val textFieldList5 = textfieldTempl(true, fontColors, backgroundColors)
+            val textFieldList6 = textfieldTempl(true, fontColors, backgroundColors)
 
             val list = mutableListOf<SnapshotStateList<String>>()
             list.add(textFieldList)
@@ -100,6 +106,19 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String) {
                     val guess: String = list[numberOfTries][0] + list[numberOfTries][1] + list[numberOfTries][2] + list[numberOfTries][3] + list[numberOfTries][4]
                     println(word)
                     println(gameLogic.isCorrectWord(word, guess))
+                    println(gameLogic.checkCorrectLetterPositions(word, guess))
+                    println(gameLogic.checkIfLetterInWord(word, guess))
+                    val correctLetterPositions = gameLogic.checkCorrectLetterPositions(word, guess)
+                    val letterInWordPositions = gameLogic.checkIfLetterInWord(word, guess)
+
+                    letterInWordPositions.forEach() {
+                        fontColors[it] = Color.Black
+                        backgroundColors[it] = Color.Yellow
+                    }
+                    correctLetterPositions.forEach() {
+                        fontColors[it] = Color.Black
+                        backgroundColors[it] = Color.Green
+                    }
                     numberOfTries++
             }) {
                 Text("Guess")
@@ -110,7 +129,8 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun textfieldTempl(isEnabled: Boolean): SnapshotStateList<String> {
+fun textfieldTempl(isEnabled: Boolean, initialFontColor: SnapshotStateList<Color>, initialBackgroundColor: SnapshotStateList<Color>): SnapshotStateList<String> {
+
     var text by remember { mutableStateOf(TextFieldValue("")) }
     val textFieldList = remember {
         mutableStateListOf("", "", "", "", "")
@@ -118,8 +138,8 @@ fun textfieldTempl(isEnabled: Boolean): SnapshotStateList<String> {
     Row {
         textFieldList.forEachIndexed { index, text ->
            TextField(
-                textStyle = TextStyle(color = Color.Black, fontSize = 30.sp, textAlign = TextAlign.Center),
-                colors = TextFieldDefaults.textFieldColors(containerColor = Color.LightGray),
+                textStyle = TextStyle(color = initialFontColor[index], fontSize = 30.sp, textAlign = TextAlign.Center),
+                colors = TextFieldDefaults.textFieldColors(containerColor = initialBackgroundColor[index]),
                 value = text,
                 enabled = isEnabled,
                 onValueChange = { newText -> if (newText.length <= 1){
@@ -135,26 +155,6 @@ fun textfieldTempl(isEnabled: Boolean): SnapshotStateList<String> {
         }
 
    }
-
-  //ToDo: Problem lösen -> wie greifen wir auf einen einzelnen Textfieldindex zu
-
-        /*TextField(
-            value = text,
-            onValueChange = { newText -> text = newText },
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .width(80.dp)
-                .padding(8.dp)
-        )
-        var text2 by remember { mutableStateOf(TextFieldValue("")) }
-        TextField(
-            value = text2,
-            onValueChange = { newText -> text2 = newText },
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .width(80.dp)
-                .padding(8.dp)
-        )*/
 
     return textFieldList
 }
