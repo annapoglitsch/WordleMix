@@ -1,19 +1,16 @@
 package com.example.wordlemix.viewModel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
 
 class SharedViewModel : ViewModel() {
-    private val _sharedThemeBool = MutableStateFlow(false)
-    val sharedThemeBool: StateFlow<Boolean>
-        get() = _sharedThemeBool
+    private val _isDarkBool = MutableStateFlow(false)
+    val isDarkBool: StateFlow<Boolean>
+        get() = _isDarkBool
 
     fun setBoolean(value: Boolean){
-        _sharedThemeBool.value = value
+        _isDarkBool.value = value
     }
 }
-//ToDo: implement viewmodel for other screens
+//ToDo: change startscreen default colors -> should change when darkmode

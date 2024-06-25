@@ -21,14 +21,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            var darkTheme by remember {mutableStateOf(false)}
-            WordleMixTheme(darkTheme = darkTheme) {
                 Surface(modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background)
                 {
                     Navigation()
                 }
-            }
         }
     }
 }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,23 +20,30 @@ import androidx.navigation.NavController
 import com.example.wordlemix.navigation.ScreenRoutes
 import com.example.wordlemix.reusableItems.Headline
 import com.example.wordlemix.reusableItems.button
+import com.example.wordlemix.ui.theme.WordleMixTheme
+import com.example.wordlemix.viewModel.SharedViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun StartScreen(
     navController: NavController,
     route: String,
+    sharedViewModel: SharedViewModel
 ) {
-    Surface(
-        modifier = Modifier
-            .fillMaxSize(),
-    ) {
-
-        Scaffold(
-            modifier = Modifier.fillMaxSize()
+    val isDark = sharedViewModel.isDarkBool.collectAsState()
+    WordleMixTheme(darkTheme = isDark.value) {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize(),
         ) {
-            StartScreenStructure(navController)
-        }
+
+            Scaffold(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                StartScreenStructure(navController)
+            }
+    }
+
     }
 }
 

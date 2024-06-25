@@ -1,7 +1,6 @@
 package com.example.wordlemix.screens
 
 import android.annotation.SuppressLint
-import android.app.Application
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -31,9 +30,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,12 +38,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wordlemix.R
 import com.example.wordlemix.reusableItems.AppBars
+import com.example.wordlemix.ui.theme.WordleMixTheme
 import com.example.wordlemix.viewModel.SharedViewModel
-import dagger.hilt.android.HiltAndroidApp
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -59,9 +54,9 @@ fun SettingsScreen(
 )  {
 
     val topAppBar = AppBars()
-    val sharedBoolean = sharedViewModel.sharedThemeBool.collectAsState()
+    val isDark = sharedViewModel.isDarkBool.collectAsState()
 
-    ThemeSwitch(darkTheme = sharedBoolean.value) {
+    WordleMixTheme(darkTheme = isDark.value) {
         Surface(
             modifier = Modifier
                 .fillMaxSize(),
@@ -85,13 +80,9 @@ fun SettingsScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    /*  ThemeSwitcherToggle(
-                          darkTheme = darkTheme,
-                          onClick = onThemeUpdated
-                      )*/
                     ThemeSwitchToggle(
-                        darkTheme = sharedBoolean.value,
-                        onClick = { sharedViewModel.setBoolean(!sharedBoolean.value) })
+                        darkTheme = isDark.value,
+                        onClick = { sharedViewModel.setBoolean(!isDark.value) })
                 }
             }
         }
@@ -109,7 +100,7 @@ fun ThemeSwitch(darkTheme: Boolean = false, content: @Composable () -> Unit) {
         )
     } else {
         lightColorScheme(
-            primary = Color.Black,
+            primary = Color(0xFFF8BE85),
             primaryContainer = Color(0xFFAAD6F3),
             secondary = Color.Gray
 

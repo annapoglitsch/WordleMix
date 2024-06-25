@@ -61,8 +61,7 @@ private val LightColorPalette = lightColorScheme(
 
 @Composable
 fun WordleMixTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
+    darkTheme: Boolean = false,
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
