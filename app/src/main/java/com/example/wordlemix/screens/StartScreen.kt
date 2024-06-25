@@ -1,6 +1,7 @@
 package com.example.wordlemix.screens
 
 import android.annotation.SuppressLint
+import android.content.res.Resources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -52,7 +54,7 @@ fun StartScreenStructure(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color(0xFFAAD6F3))
+            .background(color = MaterialTheme.colorScheme.background)
             .padding(top = 16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally

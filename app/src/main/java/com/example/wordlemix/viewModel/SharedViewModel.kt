@@ -13,4 +13,3 @@ class SharedViewModel : ViewModel() {
         _isDarkBool.value = value
     }
 }
-//ToDo: change startscreen default colors -> should change when darkmode

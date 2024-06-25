@@ -76,7 +76,8 @@ fun SettingsScreen(
                 Column(
                     Modifier
                         .fillMaxSize()
-                        .padding(top = 16.dp),
+                        .padding(top = 16.dp)
+                        .background(MaterialTheme.colorScheme.background),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
