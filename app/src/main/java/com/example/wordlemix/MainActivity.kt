@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.core.content.pm.ShortcutInfoCompat.Surface
 import com.example.wordlemix.navigation.Navigation
 import com.example.wordlemix.ui.theme.WordleMixTheme
+import dagger.hilt.android.AndroidEntryPoint
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

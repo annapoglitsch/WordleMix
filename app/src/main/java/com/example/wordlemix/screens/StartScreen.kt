@@ -25,8 +25,6 @@ import com.example.wordlemix.reusableItems.button
 fun StartScreen(
     navController: NavController,
     route: String,
-    darkTheme: Boolean,
-    onThemeUpdated: () -> Unit
 ) {
     Surface(
         modifier = Modifier

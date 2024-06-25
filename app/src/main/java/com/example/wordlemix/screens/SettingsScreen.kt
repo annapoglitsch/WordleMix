@@ -1,8 +1,7 @@
-@file:Suppress("IMPLICIT_CAST_TO_ANY")
-
 package com.example.wordlemix.screens
 
 import android.annotation.SuppressLint
+import android.app.Application
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -30,6 +29,7 @@ import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,9 +42,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.wordlemix.R
 import com.example.wordlemix.reusableItems.AppBars
+import com.example.wordlemix.viewModel.SharedViewModel
+import dagger.hilt.android.HiltAndroidApp
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -52,13 +55,13 @@ import com.example.wordlemix.reusableItems.AppBars
 fun SettingsScreen(
     navController: NavController,
     route: String,
-    darkTheme: Boolean,
-    onThemeUpdated: () -> Unit
-) {
+    sharedViewModel: SharedViewModel
+)  {
 
     val topAppBar = AppBars()
-    var isDarkTheme by remember { mutableStateOf(false) }
-    ThemeSwitch(darkTheme = isDarkTheme) {
+    val sharedBoolean = sharedViewModel.sharedThemeBool.collectAsState()
+
+    ThemeSwitch(darkTheme = sharedBoolean.value) {
         Surface(
             modifier = Modifier
                 .fillMaxSize(),
@@ -87,8 +90,8 @@ fun SettingsScreen(
                           onClick = onThemeUpdated
                       )*/
                     ThemeSwitchToggle(
-                        darkTheme = isDarkTheme,
-                        onClick = { isDarkTheme = !isDarkTheme })
+                        darkTheme = sharedBoolean.value,
+                        onClick = { sharedViewModel.setBoolean(!sharedBoolean.value) })
                 }
             }
         }
