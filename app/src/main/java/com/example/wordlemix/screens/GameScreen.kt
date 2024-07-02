@@ -12,12 +12,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -34,24 +36,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.wordlemix.reusableItems.AppBars
+import com.example.wordlemix.viewModel.SharedViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun GameScreen(navController: NavController, route: String) {
+fun GameScreen(navController: NavController, route: String, sharedViewModel: SharedViewModel) {
     val topAppBar = AppBars()
-    Surface(
-        modifier = Modifier
-            .fillMaxSize(),
-    ) {
-
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                topAppBar.TopAppBar(titleText = "Today's WordleMix", icon = true, navController = navController)
-            }
-
+    val isDark = sharedViewModel.isDarkBool.collectAsState()
+    ThemeSwitch(darkTheme = isDark.value) {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize(),
         ) {
-            GameScreenStructure()
+
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                topBar = {
+                    topAppBar.TopAppBar(
+                        titleText = "Today's WordleMix",
+                        icon = true,
+                        navController = navController
+                    )
+                }
+
+            ) {
+                GameScreenStructure()
+            }
         }
     }
 }
@@ -62,7 +72,7 @@ fun GameScreenStructure() {
         modifier = Modifier
             .fillMaxSize()
             .padding(vertical = 10.dp)
-            .background(color = Color(0xFFAAD6F3)),
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(50.dp)
     ) {
@@ -73,9 +83,11 @@ fun GameScreenStructure() {
             textfieldTempl(false)
             textfieldTempl(false)
             textfieldTempl(false)
-            Divider(modifier = Modifier.padding(10.dp),
+            Divider(
+                modifier = Modifier.padding(10.dp),
                 color = Color.Black,
-                thickness = 2.dp)
+                thickness = 2.dp
+            )
             Button(onClick = {
                 println("First Word: ${textFieldList[0]}${textFieldList[1]}${textFieldList[2]}${textFieldList[3]}${textFieldList[4]} ")
             }) {
@@ -94,23 +106,28 @@ fun textfieldTempl(isEnabled: Boolean): SnapshotStateList<String> {
     }
     Row {
         textFieldList.forEachIndexed { index, text ->
-           TextField(
-                textStyle = TextStyle(color = Color.Black, fontSize = 30.sp, textAlign = TextAlign.Center),
+            TextField(
+                textStyle = TextStyle(
+                    color = Color.Black,
+                    fontSize = 30.sp,
+                    textAlign = TextAlign.Center
+                ),
                 colors = TextFieldDefaults.textFieldColors(containerColor = Color.LightGray),
                 value = text,
                 enabled = isEnabled,
-                onValueChange = { newText -> if (newText.length <= 1){
-                    textFieldList[index] = newText
-                }
-                                                              },
+                onValueChange = { newText ->
+                    if (newText.length <= 1) {
+                        textFieldList[index] = newText
+                    }
+                },
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier
                     .width(80.dp)
                     .padding(top = 10.dp, start = 8.dp, end = 8.dp),
 
-            )
+                )
         }
 
-   }
+    }
     return textFieldList
 }

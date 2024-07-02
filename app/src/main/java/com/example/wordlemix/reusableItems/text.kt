@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun Headline(headlineText: String) {
     Text(
-        text = headlineText, color = Color(0xFFE5EBEF),
+        text = headlineText, color = MaterialTheme.colorScheme.tertiary,
         style = MaterialTheme.typography.bodyLarge,
     )
 }
