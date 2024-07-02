@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wordlemix.screens.GameScreen
+import com.example.wordlemix.screens.ScoreBoard
 import com.example.wordlemix.screens.SettingsScreen
 import com.example.wordlemix.screens.StartScreen
 import com.example.wordlemix.viewModel.SharedViewModel
@@ -24,6 +25,9 @@ fun Navigation() {
         }
         composable(route = ScreenRoutes.SettingsScreen.route){
             SettingsScreen(navController, ScreenRoutes.SettingsScreen.route, sharedViewModel)
+        }
+        composable(route = ScreenRoutes.ScoreBoardScreen.route){
+            ScoreBoard(navController, ScreenRoutes.ScoreBoardScreen.route)
         }
     }
 }
