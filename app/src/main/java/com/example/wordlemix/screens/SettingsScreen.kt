@@ -26,6 +26,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -65,7 +66,6 @@ fun SettingsScreen(
 
     val topAppBar = AppBars()
     val isDark = sharedViewModel.isDarkBool.collectAsState()
-
     WordleMixTheme(darkTheme = isDark.value) {
         Surface(
             modifier = Modifier
@@ -91,10 +91,14 @@ fun SettingsScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+
                     ThemeSwitchToggle(
                         darkTheme = isDark.value,
                         onClick = { sharedViewModel.setBoolean(!isDark.value) })
+                    Spacer(modifier = Modifier.size(10.dp))
+                    button(buttonText = "ScoreBoard", onClick = {navController.navigate(ScreenRoutes.ScoreBoardScreen.route) })
                 }
+
             }
         }
 
