@@ -67,8 +67,10 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String) {
     var numberOfTries by remember { mutableIntStateOf(0) }
     val initialFontColor = listOf(Color.Black, Color.Black, Color.Black, Color.Black, Color.Black)
     val initialBackgroundColor = listOf(Color.LightGray, Color.LightGray, Color.LightGray, Color.LightGray, Color.LightGray)
-    val fontColors = remember { mutableStateListOf(*initialFontColor.toTypedArray()) }
-    val backgroundColors = remember { mutableStateListOf(*initialBackgroundColor.toTypedArray()) }
+
+    val fontColorsList = remember { List(6) {mutableStateListOf(*initialFontColor.toTypedArray())}}
+    val backgroundColorsList = remember { List(6) {mutableStateListOf(*initialBackgroundColor.toTypedArray())}}
+    val textFieldLists = remember { List(6) { mutableStateListOf("", "", "", "", "") } }
 
 
     Column(
@@ -80,20 +82,9 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String) {
         verticalArrangement = Arrangement.spacedBy(50.dp)
     ) {
         Column(modifier = Modifier.padding(top = 60.dp)) {
-            val textFieldList = textfieldTempl(true, fontColors, backgroundColors)
-            val textFieldList2 = textfieldTempl(true, fontColors, backgroundColors)
-            val textFieldList3 = textfieldTempl(true, fontColors, backgroundColors)
-            val textFieldList4 = textfieldTempl(true, fontColors, backgroundColors)
-            val textFieldList5 = textfieldTempl(true, fontColors, backgroundColors)
-            val textFieldList6 = textfieldTempl(true, fontColors, backgroundColors)
-
-            val list = mutableListOf<SnapshotStateList<String>>()
-            list.add(textFieldList)
-            list.add(textFieldList2)
-            list.add(textFieldList3)
-            list.add(textFieldList4)
-            list.add(textFieldList5)
-            list.add(textFieldList6)
+            for (i in 0..5) {
+                textfieldTempl(true, fontColorsList[i], backgroundColorsList[i], textFieldLists[i])
+            }
 
             Divider(modifier = Modifier.padding(10.dp),
                 color = Color.Black,
@@ -102,8 +93,8 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String) {
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 onClick = {
                 //println("First Word: ${textFieldList[0]}${textFieldList[1]}${textFieldList[2]}${textFieldList[3]}${textFieldList[4]} ")
-                    println("Word: ${list[numberOfTries][0]}${list[numberOfTries][1]}${list[numberOfTries][2]}${list[numberOfTries][3]}${list[numberOfTries][4]}")
-                    val guess: String = list[numberOfTries][0] + list[numberOfTries][1] + list[numberOfTries][2] + list[numberOfTries][3] + list[numberOfTries][4]
+                    val currentTextFieldList = textFieldLists[numberOfTries]
+                    val guess: String = currentTextFieldList.joinToString("")
                     println(word)
                     println(gameLogic.isCorrectWord(word, guess))
                     println(gameLogic.checkCorrectLetterPositions(word, guess))
@@ -111,13 +102,15 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String) {
                     val correctLetterPositions = gameLogic.checkCorrectLetterPositions(word, guess)
                     val letterInWordPositions = gameLogic.checkIfLetterInWord(word, guess)
 
-                    letterInWordPositions.forEach() {
-                        fontColors[it] = Color.Black
-                        backgroundColors[it] = Color.Yellow
+                    correctLetterPositions.forEach { index ->
+                        fontColorsList[numberOfTries][index] = Color.Black
+                        backgroundColorsList[numberOfTries][index] = Color.Green
                     }
-                    correctLetterPositions.forEach() {
-                        fontColors[it] = Color.Black
-                        backgroundColors[it] = Color.Green
+                    letterInWordPositions.forEach { index ->
+                        if (!correctLetterPositions.contains(index)) {
+                            fontColorsList[numberOfTries][index] = Color.Black
+                            backgroundColorsList[numberOfTries][index] = Color.Yellow
+                        }
                     }
                     numberOfTries++
             }) {
@@ -129,17 +122,12 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun textfieldTempl(isEnabled: Boolean, initialFontColor: SnapshotStateList<Color>, initialBackgroundColor: SnapshotStateList<Color>): SnapshotStateList<String> {
-
-    var text by remember { mutableStateOf(TextFieldValue("")) }
-    val textFieldList = remember {
-        mutableStateListOf("", "", "", "", "")
-    }
+fun textfieldTempl(isEnabled: Boolean, fontColors: SnapshotStateList<Color>, backgroundColors: SnapshotStateList<Color>, textFieldList: SnapshotStateList<String>) {
     Row {
         textFieldList.forEachIndexed { index, text ->
            TextField(
-                textStyle = TextStyle(color = initialFontColor[index], fontSize = 30.sp, textAlign = TextAlign.Center),
-                colors = TextFieldDefaults.textFieldColors(containerColor = initialBackgroundColor[index]),
+                textStyle = TextStyle(color = fontColors[index], fontSize = 30.sp, textAlign = TextAlign.Center),
+                colors = TextFieldDefaults.textFieldColors(containerColor = backgroundColors[index]),
                 value = text,
                 enabled = isEnabled,
                 onValueChange = { newText -> if (newText.length <= 1){
@@ -153,8 +141,5 @@ fun textfieldTempl(isEnabled: Boolean, initialFontColor: SnapshotStateList<Color
 
             )
         }
-
    }
-
-    return textFieldList
 }
