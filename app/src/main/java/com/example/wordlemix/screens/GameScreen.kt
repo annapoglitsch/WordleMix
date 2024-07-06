@@ -126,39 +126,44 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
     )
 
     when (gameState) {
-        GameState.IN_PROGRESS -> Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(vertical = 10.dp)
-                .background(color = Color(0xFFAAD6F3)),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(50.dp)
-        ) {
-            Column(modifier = Modifier.padding(top = 60.dp)) {
-                for (i in 0..4) {
-                    textfieldTempl(
-                        //true,
-                        isEnabled = (i == enabledColumnIndex),
-                        fontColorsList[i],
-                        backgroundColorsList[i],
-                        textFieldLists[i],
-                        keyHandler,
-                        i,
-                        incrementColumnIndex,
-                        incrementNumberOfTries
-                    )
-                }
+        GameState.IN_PROGRESS ->
 
-                Divider(
-                    modifier = Modifier.padding(10.dp), color = Color.Black, thickness = 2.dp
-                )
-                Button(modifier = Modifier.align(Alignment.CenterHorizontally), onClick = {
-                    keyHandler.handleGuess(incrementColumnIndex, incrementNumberOfTries)
-                }) {
-                    Text("Guess")
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(vertical = 10.dp)
+                    .background(color = Color(0xFFAAD6F3)),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(50.dp)
+            ) {
+                colorChanger.updateColors(numberOfTries, backgroundColorsList, fontColorsList)
+                //colorChanger.updateColors(numberOfTries, backgroundColorsList)
+                Column(modifier = Modifier.padding(top = 60.dp)) {
+                    for (i in 0..4) {
+                        textfieldTempl(
+                            //true,
+                            isEnabled = (i == enabledColumnIndex),
+                            fontColorsList[i],
+                            backgroundColorsList[i],
+                            textFieldLists[i],
+                            keyHandler,
+                            i,
+                            incrementColumnIndex,
+                            incrementNumberOfTries
+                        )
+                    }
+
+                    Divider(
+                        modifier = Modifier.padding(10.dp), color = Color.Black, thickness = 2.dp
+                    )
+                    Button(modifier = Modifier.align(Alignment.CenterHorizontally), onClick = {
+                        keyHandler.handleGuess(incrementColumnIndex, incrementNumberOfTries)
+                    }) {
+                        Text("Guess")
+                    }
                 }
             }
-        }
+
         GameState.LOST -> losingPanel(25, navController)
         GameState.WON -> winningPanel(25, navController)
     }

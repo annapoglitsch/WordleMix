@@ -52,7 +52,7 @@ class KeyHandler(
             enabledColumnIndex++
         }*/
         incrementColumnIndex()
-        println(enabledColumnIndex)
+        println(word)
 
         /*if (numberOfTries < focusRequesters.size) {
             focusRequesters[numberOfTries][0].requestFocus()
