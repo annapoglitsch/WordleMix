@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -40,7 +41,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.7"
     }
     packaging {
         resources {
@@ -51,15 +52,32 @@ android {
 
 dependencies {
 
+    // versions
+    val room_version = "2.6.1"
+    // room dependencies
+    implementation("androidx.room:room-runtime:$room_version")
+    // To use Kotlin Symbol Processing (KSP)
+    ksp("androidx.room:room-compiler:$room_version")
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$room_version")
+
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.7")
-    val nav_version = "2.7.7"
 
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-
+    implementation ("androidx.compose.runtime:runtime-livedata:1.4.3")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
 
     implementation("androidx.compose.ui:ui-text-google-fonts:1.6.1")
+    val lifecycle_version = "2.7.0"
 
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+
+    val nav_version = "2.7.7"
     implementation("androidx.navigation:navigation-compose:$nav_version")
+
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.0")

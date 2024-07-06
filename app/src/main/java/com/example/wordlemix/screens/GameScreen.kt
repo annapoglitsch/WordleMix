@@ -16,12 +16,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -45,6 +47,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.wordlemix.reusableItems.AppBars
+import com.example.wordlemix.viewModel.SharedViewModel
 import com.example.wordlemix.appbars.AppBars
 import com.example.wordlemix.game.GameLogic
 import com.example.wordlemix.game.KeyHandler
@@ -66,8 +70,9 @@ import com.example.wordlemix.game.GameState
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun GameScreen(navController: NavController, route: String) {
+fun GameScreen(navController: NavController, route: String, sharedViewModel: SharedViewModel) {
     val topAppBar = AppBars()
+
     val gameLogic = GameLogic()
     val word = gameLogic.chooseRandomWord()
     Surface(
@@ -103,12 +108,15 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
     val incrementColumnIndex = {
         if (enabledColumnIndex < 4) {
             enabledColumnIndex++
+
         }
     }
+
 
     val incrementNumberOfTries = {
         if (numberOfTries <= 4) {
             numberOfTries++
+
         }
     }
 
@@ -186,18 +194,22 @@ fun textfieldTempl(
 
     Row {
         textFieldList.forEachIndexed { index, text ->
+
             TextField(textStyle = TextStyle(
                 color = fontColors[index], fontSize = 30.sp, textAlign = TextAlign.Center
             ),
                 colors = TextFieldDefaults.textFieldColors(containerColor = backgroundColors[index]),
+
                 value = text,
                 enabled = isEnabled,
                 onValueChange = { newText ->
                     if (newText.length <= 1) {
                         textFieldList[index] = newText
+
                         if (newText.isNotEmpty() && index < 4) {
                             focusRequesters[index + 1].requestFocus()
                         }
+
                     }
                 },
                 shape = RoundedCornerShape(8.dp),
@@ -214,6 +226,7 @@ fun textfieldTempl(
                                 }
                                 true
                             }
+
 
                             Key.Enter -> {
                                 keyHandler.handleGuess(incrementFocusIndex, incrementNumberOfTries)
@@ -234,8 +247,10 @@ fun textfieldTempl(
             )/*.onKeyEvent { keyEvent ->
                 println("Key code: ${keyEvent}")
             false})*/
+
         }
     }
+
 
 }
 
@@ -275,4 +290,5 @@ fun losingPanel(scoreDecrease: Int, navController: NavController) {
         Spacer(modifier = Modifier.size(30.dp))
         button(buttonText = "Go Back", onClick = { navController.popBackStack() })
     }
+
 }

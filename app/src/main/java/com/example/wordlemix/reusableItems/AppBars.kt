@@ -1,4 +1,4 @@
-package com.example.wordlemix.appbars
+package com.example.wordlemix.reusableItems
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack

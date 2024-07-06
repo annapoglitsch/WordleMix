@@ -1,5 +1,6 @@
 package com.example.wordlemix.reusableItems
 
+import android.content.res.Resources
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CutCornerShape
@@ -29,8 +30,8 @@ fun button(buttonText: String, onClick: () -> Unit = {}) {
             disabledElevation = 0.dp
         ),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFF8BE85),
-            contentColor = Color(0xFFE5EBEF)
+            containerColor = MaterialTheme.colorScheme.secondary,
+            contentColor = MaterialTheme.colorScheme.tertiary
         )
     ) {
         Text(text = buttonText, style = MaterialTheme.typography.bodySmall)
