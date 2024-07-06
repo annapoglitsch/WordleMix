@@ -1,6 +1,7 @@
 package com.example.wordlemix.game
 
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 
 class KeyHandler(
@@ -10,7 +11,8 @@ class KeyHandler(
     var fontColorsList: List<SnapshotStateList<Color>>,
     var backgroundColorsList: List<SnapshotStateList<Color>>,
     var textFieldLists: List<SnapshotStateList<String>>,
-    var isFinished: (Boolean) -> Unit
+    var isFinished: (Boolean) -> Unit,
+    val focusRequesters: List<List<FocusRequester>>
 ) {
 
     fun handleGuess() {
@@ -41,6 +43,8 @@ class KeyHandler(
 
         numberOfTries++
 
-
+        if (numberOfTries < focusRequesters.size) {
+            focusRequesters[numberOfTries][0].requestFocus()
+        }
     }
 }

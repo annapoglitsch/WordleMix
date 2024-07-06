@@ -94,10 +94,21 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
     val backgroundColorsList =
         remember { List(6) { mutableStateListOf(*initialBackgroundColor.toTypedArray()) } }
     val textFieldLists = remember { List(6) { mutableStateListOf("", "", "", "", "") } }
+    val focusRequesters = remember { List(5) { List(5) { FocusRequester() } } }
+    var enabledColumnIndex by remember { mutableIntStateOf(0) }
 
     var keyHandler = KeyHandler(
-        numberOfTries, word, gameLogic, fontColorsList, backgroundColorsList, textFieldLists, isFinished = { finished -> isFinished = finished }
+        numberOfTries,
+        word,
+        gameLogic,
+        fontColorsList,
+        backgroundColorsList,
+        textFieldLists,
+        isFinished = { finished -> isFinished = finished },
+        focusRequesters
     )
+
+
 
     if (!isFinished) {
         Column(
@@ -109,13 +120,15 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
             verticalArrangement = Arrangement.spacedBy(50.dp)
         ) {
             Column(modifier = Modifier.padding(top = 60.dp)) {
-                for (i in 0..5) {
+                for (i in 0..4) {
                     textfieldTempl(
-                        true,
+                        isEnabled = (i == enabledColumnIndex),
                         fontColorsList[i],
                         backgroundColorsList[i],
                         textFieldLists[i],
-                        keyHandler
+                        keyHandler,
+                        focusRequesters,
+                        i
                     )
                 }
 
@@ -123,7 +136,12 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
                     modifier = Modifier.padding(10.dp), color = Color.Black, thickness = 2.dp
                 )
                 Button(modifier = Modifier.align(Alignment.CenterHorizontally), onClick = {
+
                     keyHandler.handleGuess()
+                    if (enabledColumnIndex < 4) {
+                        enabledColumnIndex++
+                    }
+
                 }) {
                     Text("Guess")
                 }
@@ -141,9 +159,11 @@ fun textfieldTempl(
     fontColors: SnapshotStateList<Color>,
     backgroundColors: SnapshotStateList<Color>,
     textFieldList: SnapshotStateList<String>,
-    keyHandler: KeyHandler
+    keyHandler: KeyHandler,
+    focusRequesters: List<List<FocusRequester>>,
+    focusIndex: Int,
 ) {
-    val focusRequesters = List(5) { remember { FocusRequester() } }
+    //val focusRequesters = List(5) { remember { FocusRequester() } }
 
 
     Row {
@@ -158,7 +178,7 @@ fun textfieldTempl(
                     if (newText.length <= 1) {
                         textFieldList[index] = newText
                         if (newText.isNotEmpty() && index < 4) {
-                            focusRequesters[index + 1].requestFocus()
+                            focusRequesters[focusIndex][index + 1].requestFocus()
                         }
                     }
                 },
@@ -166,12 +186,12 @@ fun textfieldTempl(
                 modifier = Modifier
                     .width(80.dp)
                     .padding(top = 10.dp, start = 8.dp, end = 8.dp)
-                    .focusRequester(focusRequesters[index])
+                    .focusRequester(focusRequesters[focusIndex][index])
                     .onKeyEvent { keyEvent ->
                         when (keyEvent.key) {
                             Key.Backspace -> {
                                 if (textFieldList[index].isEmpty() && index > 0) {
-                                    focusRequesters[index - 1].requestFocus()
+                                    focusRequesters[focusIndex][index - 1].requestFocus()
                                     textFieldList[index - 1] = ""
                                 }
                                 true
@@ -200,7 +220,7 @@ fun textfieldTempl(
 }
 
 @Composable
-fun winningPanel(scoreIncrease: Int = 2, navController: NavController) {
+fun winningPanel(scoreIncrease: Int, navController: NavController) {
     Column(
         modifier = Modifier
             .background(color = Color.Gray.copy(alpha = 0.5f))
