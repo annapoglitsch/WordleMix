@@ -15,6 +15,7 @@ class KeyHandler(
     val colorChanger: ColorChanger,
     var numberOfTries: Int,
     var enabledColumnIndex: Int,
+    var setGameState: (GameState) -> Unit
 ) {
 
     fun handleGuess(incrementColumnIndex: () -> Unit, incrementNumberOfTries: () -> Unit) {
@@ -43,9 +44,10 @@ class KeyHandler(
         val finished = gameLogic.isCorrectWord(word, guess)
         isFinished(finished)
 
+
         //numberOfTries++
         incrementNumberOfTries()
-
+        setGameState(gameLogic.getGameState(numberOfTries, guess, word))
         /*if (enabledColumnIndex < 4) {
             enabledColumnIndex++
         }*/

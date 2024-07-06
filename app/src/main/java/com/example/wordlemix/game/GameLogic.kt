@@ -51,4 +51,13 @@ class GameLogic {
 
         return result
     }
+
+    fun getGameState(numberOfTries: Int, guess: String, word: String): GameState {
+        if (isCorrectWord(word, guess))
+            return GameState.WON
+        if (numberOfTries >= 4)
+            return GameState.LOST
+
+        return GameState.IN_PROGRESS
+    }
 }

@@ -61,6 +61,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.ui.unit.dp
 import com.example.wordlemix.game.ColorChanger
+import com.example.wordlemix.game.GameState
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -89,6 +90,7 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
     val initialBackgroundColor =
         listOf(Color.LightGray, Color.LightGray, Color.LightGray, Color.LightGray, Color.LightGray)
     var isFinished by remember { mutableStateOf(false) }
+    var gameState by remember { mutableStateOf(GameState.IN_PROGRESS) }
 
     val fontColorsList =
         remember { List(6) { mutableStateListOf(*initialFontColor.toTypedArray()) } }
@@ -105,7 +107,7 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
     }
 
     val incrementNumberOfTries = {
-        if (numberOfTries < 4) {
+        if (numberOfTries <= 4) {
             numberOfTries++
         }
     }
@@ -119,11 +121,12 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
         isFinished = { finished -> isFinished = finished },
         colorChanger,
         numberOfTries,
-        enabledColumnIndex
+        enabledColumnIndex,
+        setGameState = { gameStateParam -> gameState = gameStateParam }
     )
 
-    if (!isFinished) {
-        Column(
+    when (gameState) {
+        GameState.IN_PROGRESS -> Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(vertical = 10.dp)
@@ -156,8 +159,8 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
                 }
             }
         }
-    } else {
-        winningPanel(5, navController)
+        GameState.LOST -> losingPanel(25, navController)
+        GameState.WON -> winningPanel(25, navController)
     }
 }
 
@@ -206,10 +209,12 @@ fun textfieldTempl(
                                 }
                                 true
                             }
+
                             Key.Enter -> {
                                 keyHandler.handleGuess(incrementFocusIndex, incrementNumberOfTries)
                                 true
                             }
+
                             else -> false
                         }
                     },
@@ -242,6 +247,25 @@ fun winningPanel(scoreIncrease: Int, navController: NavController) {
         Text(
             style = TextStyle(fontSize = 25.sp),
             text = "Your score will be increased by ${scoreIncrease}."
+        )
+        Spacer(modifier = Modifier.size(30.dp))
+        button(buttonText = "Go Back", onClick = { navController.popBackStack() })
+    }
+}
+
+@Composable
+fun losingPanel(scoreDecrease: Int, navController: NavController) {
+    Column(
+        modifier = Modifier
+            .background(color = Color.Gray.copy(alpha = 0.5f))
+            .fillMaxSize(),
+        //.height(500.dp),
+        verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "You lost!")
+        Text(
+            style = TextStyle(fontSize = 25.sp),
+            text = "Your score will be decrease by ${scoreDecrease}."
         )
         Spacer(modifier = Modifier.size(30.dp))
         button(buttonText = "Go Back", onClick = { navController.popBackStack() })
