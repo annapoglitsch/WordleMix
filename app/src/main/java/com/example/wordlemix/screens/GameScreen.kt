@@ -60,6 +60,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.ui.unit.dp
+import com.example.wordlemix.game.ColorChanger
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -94,21 +95,32 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
     val backgroundColorsList =
         remember { List(6) { mutableStateListOf(*initialBackgroundColor.toTypedArray()) } }
     val textFieldLists = remember { List(6) { mutableStateListOf("", "", "", "", "") } }
-    val focusRequesters = remember { List(5) { List(5) { FocusRequester() } } }
     var enabledColumnIndex by remember { mutableIntStateOf(0) }
+    val colorChanger = ColorChanger()
+
+    val incrementColumnIndex = {
+        if (enabledColumnIndex < 4) {
+            enabledColumnIndex++
+        }
+    }
+
+    val incrementNumberOfTries = {
+        if (numberOfTries < 4) {
+            numberOfTries++
+        }
+    }
 
     var keyHandler = KeyHandler(
-        numberOfTries,
         word,
         gameLogic,
         fontColorsList,
         backgroundColorsList,
         textFieldLists,
         isFinished = { finished -> isFinished = finished },
-        focusRequesters
+        colorChanger,
+        numberOfTries,
+        enabledColumnIndex
     )
-
-
 
     if (!isFinished) {
         Column(
@@ -122,13 +134,15 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
             Column(modifier = Modifier.padding(top = 60.dp)) {
                 for (i in 0..4) {
                     textfieldTempl(
+                        //true,
                         isEnabled = (i == enabledColumnIndex),
                         fontColorsList[i],
                         backgroundColorsList[i],
                         textFieldLists[i],
                         keyHandler,
-                        focusRequesters,
-                        i
+                        i,
+                        incrementColumnIndex,
+                        incrementNumberOfTries
                     )
                 }
 
@@ -136,12 +150,7 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
                     modifier = Modifier.padding(10.dp), color = Color.Black, thickness = 2.dp
                 )
                 Button(modifier = Modifier.align(Alignment.CenterHorizontally), onClick = {
-
-                    keyHandler.handleGuess()
-                    if (enabledColumnIndex < 4) {
-                        enabledColumnIndex++
-                    }
-
+                    keyHandler.handleGuess(incrementColumnIndex, incrementNumberOfTries)
                 }) {
                     Text("Guess")
                 }
@@ -160,10 +169,11 @@ fun textfieldTempl(
     backgroundColors: SnapshotStateList<Color>,
     textFieldList: SnapshotStateList<String>,
     keyHandler: KeyHandler,
-    focusRequesters: List<List<FocusRequester>>,
     focusIndex: Int,
+    incrementFocusIndex: () -> Unit,
+    incrementNumberOfTries: () -> Unit
 ) {
-    //val focusRequesters = List(5) { remember { FocusRequester() } }
+    val focusRequesters = List(5) { remember { FocusRequester() } }
 
 
     Row {
@@ -178,7 +188,7 @@ fun textfieldTempl(
                     if (newText.length <= 1) {
                         textFieldList[index] = newText
                         if (newText.isNotEmpty() && index < 4) {
-                            focusRequesters[focusIndex][index + 1].requestFocus()
+                            focusRequesters[index + 1].requestFocus()
                         }
                     }
                 },
@@ -186,18 +196,18 @@ fun textfieldTempl(
                 modifier = Modifier
                     .width(80.dp)
                     .padding(top = 10.dp, start = 8.dp, end = 8.dp)
-                    .focusRequester(focusRequesters[focusIndex][index])
+                    .focusRequester(focusRequesters[index])
                     .onKeyEvent { keyEvent ->
                         when (keyEvent.key) {
                             Key.Backspace -> {
                                 if (textFieldList[index].isEmpty() && index > 0) {
-                                    focusRequesters[focusIndex][index - 1].requestFocus()
+                                    focusRequesters[index - 1].requestFocus()
                                     textFieldList[index - 1] = ""
                                 }
                                 true
                             }
                             Key.Enter -> {
-                                keyHandler.handleGuess()
+                                keyHandler.handleGuess(incrementFocusIndex, incrementNumberOfTries)
                                 true
                             }
                             else -> false
@@ -208,7 +218,7 @@ fun textfieldTempl(
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        keyHandler.handleGuess()
+                        keyHandler.handleGuess(incrementFocusIndex, incrementNumberOfTries)
                     }
                 )
             )/*.onKeyEvent { keyEvent ->

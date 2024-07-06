@@ -3,27 +3,29 @@ package com.example.wordlemix.game
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import kotlin.math.absoluteValue
 
 class KeyHandler(
-    var numberOfTries: Int,
     val word: String,
     val gameLogic: GameLogic,
     var fontColorsList: List<SnapshotStateList<Color>>,
     var backgroundColorsList: List<SnapshotStateList<Color>>,
     var textFieldLists: List<SnapshotStateList<String>>,
     var isFinished: (Boolean) -> Unit,
-    val focusRequesters: List<List<FocusRequester>>
+    val colorChanger: ColorChanger,
+    var numberOfTries: Int,
+    var enabledColumnIndex: Int,
 ) {
 
-    fun handleGuess() {
+    fun handleGuess(incrementColumnIndex: () -> Unit, incrementNumberOfTries: () -> Unit) {
         val currentTextFieldList = textFieldLists[numberOfTries]
         val guess: String = currentTextFieldList.joinToString("")
-        println(word)
-        println(numberOfTries)
-        println(gameLogic.isCorrectWord(word, guess))
+        //println(word)
+        //println(numberOfTries)
+        //println(gameLogic.isCorrectWord(word, guess))
 
-        println(gameLogic.checkCorrectLetterPositions(word, guess))
-        println(gameLogic.checkIfLetterInWord(word, guess))
+        //println(gameLogic.checkCorrectLetterPositions(word, guess))
+        //println(gameLogic.checkIfLetterInWord(word, guess))
 
         val correctLetterPositions = gameLogic.checkCorrectLetterPositions(word, guess)
         val letterInWordPositions = gameLogic.checkIfLetterInWord(word, guess)
@@ -41,10 +43,19 @@ class KeyHandler(
         val finished = gameLogic.isCorrectWord(word, guess)
         isFinished(finished)
 
-        numberOfTries++
+        //numberOfTries++
+        incrementNumberOfTries()
 
-        if (numberOfTries < focusRequesters.size) {
+        /*if (enabledColumnIndex < 4) {
+            enabledColumnIndex++
+        }*/
+        incrementColumnIndex()
+        println(enabledColumnIndex)
+
+        /*if (numberOfTries < focusRequesters.size) {
             focusRequesters[numberOfTries][0].requestFocus()
-        }
+        }*/
+
+        //colorChanger.updateColors(numberOfTries, backgroundColorsList)
     }
 }
