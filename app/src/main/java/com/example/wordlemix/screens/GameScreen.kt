@@ -274,7 +274,7 @@ fun textfieldTempl(
 fun winningPanel(scoreIncrease: Int, navController: NavController) {
     Column(
         modifier = Modifier
-            .background(color = Color.Gray.copy(alpha = 0.5f))
+            .background(color = MaterialTheme.colorScheme.background)
             .fillMaxSize(),
         //.height(500.dp),
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
@@ -293,7 +293,7 @@ fun winningPanel(scoreIncrease: Int, navController: NavController) {
 fun losingPanel(scoreDecrease: Int, navController: NavController) {
     Column(
         modifier = Modifier
-            .background(color = Color.Gray.copy(alpha = 0.5f))
+            .background(color = MaterialTheme.colorScheme.background)
             .fillMaxSize(),
         //.height(500.dp),
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
