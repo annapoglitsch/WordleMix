@@ -19,6 +19,10 @@ class SharedViewModel(private val repository: PlayerRepository) : ViewModel() {
     private val _players = MutableStateFlow(listOf<Player>())
     val players: StateFlow<List<Player>> = _players.asStateFlow()
 
+    private val _showPopUp = MutableStateFlow(true)
+    val showPopUp: StateFlow<Boolean> = _showPopUp
+
+
 
     init{
         viewModelScope.launch {
@@ -32,6 +36,11 @@ class SharedViewModel(private val repository: PlayerRepository) : ViewModel() {
     suspend fun toggleDoneState(player: Player){
         viewModelScope.launch {
             repository.updatePlayer(player)
+        }
+    }
+    fun popUpShown() {
+        viewModelScope.launch {
+            _showPopUp.value = false
         }
     }
 
