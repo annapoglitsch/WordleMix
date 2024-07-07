@@ -10,26 +10,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [Player::class],  // tables in the db
-    version = 1,                // schema version; whenever you change schema you have to increase the version number
-    exportSchema = false        // for schema version history updates
+    entities = [Player::class],
+    version = 5,
+    exportSchema = false
 )
 abstract class PlayerDatabase: RoomDatabase() {
-    abstract fun playerDao(): PlayerDAO // Dao instance so that the DB knows about the Dao
-    // add more daos here if you have multiple tables
+    abstract fun playerDao(): PlayerDAO
 
-    // declare as singleton - companion objects are like static variables in Java
     companion object{
-        @Volatile   // never cache the value of instance
+        @Volatile
         private var instance: PlayerDatabase? = null
 
         fun getDatabase(context: Context): PlayerDatabase{
-            return instance ?: synchronized(this) { // wrap in synchronized block to prevent race conditions
+            return instance ?: synchronized(this) {
                 Room.databaseBuilder(context, PlayerDatabase::class.java, "player_db")
-                    .fallbackToDestructiveMigration() // if schema changes wipe the whole db - there are better migration strategies for production usage
-                    .build() // create an instance of the db
+                    .fallbackToDestructiveMigration()
+                    .build()
                     .also {
-                        instance = it   // override the instance with newly created db
+                        instance = it
                     }
             }
         }

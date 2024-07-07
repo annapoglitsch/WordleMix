@@ -10,7 +10,7 @@ class PlayerRepository(private val playerDAO: PlayerDAO) {
 
     suspend fun deletePlayer(player: Player) = playerDAO.delete(player)
 
-    fun getAllPlayers(): Flow<List<Player>> = playerDAO.getAll()
+    suspend fun getAllPlayers(): Flow<List<Player>> = playerDAO.getAll()
 
     fun getById(id: Int): Flow<Player?> = playerDAO.get(id)
 }
