@@ -72,7 +72,6 @@ fun SettingsScreen(
                 .fillMaxSize(),
             color = Color(0xFFAAD6F3)
         ) {
-
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
                 topBar = {
