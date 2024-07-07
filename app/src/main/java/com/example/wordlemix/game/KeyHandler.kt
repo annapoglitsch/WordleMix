@@ -1,16 +1,12 @@
 package com.example.wordlemix.game
 
 import android.content.Context
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import com.example.wordlemix.data.PlayerDatabase
 import com.example.wordlemix.data.PlayerRepository
 import com.example.wordlemix.viewModel.SharedViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlin.math.absoluteValue
 
 class KeyHandler(
     val word: String,
@@ -27,7 +23,8 @@ class KeyHandler(
     val repository: PlayerRepository,
     val coroutineScope: CoroutineScope,
     val sharedViewModel: SharedViewModel,
-    val context: Context
+    val context: Context,
+    val setJokerState: () -> Unit
 ) {
 
     fun handleGuess(incrementColumnIndex: () -> Unit, incrementNumberOfTries: () -> Unit) {
@@ -72,5 +69,15 @@ class KeyHandler(
         }*/
 
         //colorChanger.updateColors(numberOfTries, backgroundColorsList)
+    }
+
+    fun handleJoker() {
+        val currentTextFieldList = textFieldLists[numberOfTries]
+        for (i in 0 until minOf(3, word.length)) {
+            currentTextFieldList[i] = word[i].toString()
+
+        }
+
+        setJokerState()
     }
 }

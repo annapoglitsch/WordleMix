@@ -1,10 +1,7 @@
 package com.example.wordlemix.game
 
-import androidx.compose.animation.core.updateTransition
-import  androidx.compose.ui.graphics.Color.Companion
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
-import com.example.wordlemix.screens.textfieldTempl
 
 class ColorChanger {
     fun updateColors(turn: Int, backgroundColorsList: List<SnapshotStateList<Color>>, fontColorList: List<SnapshotStateList<Color>>) {

@@ -1,9 +1,6 @@
 package com.example.wordlemix.screens
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.view.KeyEvent.KEYCODE_DEL
-import android.view.KeyEvent.KEYCODE_ENTER
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,15 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -39,11 +33,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
-import android.view.KeyEvent as AndroidKeyEvent
-import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -53,29 +44,19 @@ import com.example.wordlemix.viewModel.SharedViewModel
 import com.example.wordlemix.game.GameLogic
 import com.example.wordlemix.game.KeyHandler
 import com.example.wordlemix.reusableItems.button
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.TextField
-import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.wordlemix.PlayerPreferences
 import com.example.wordlemix.SharedViewModelFactory
 import com.example.wordlemix.data.PlayerDatabase
 import com.example.wordlemix.data.PlayerRepository
 import com.example.wordlemix.game.ColorChanger
 import com.example.wordlemix.game.GameState
 import com.example.wordlemix.ui.theme.WordleMixTheme
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -118,6 +99,13 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
     val textFieldLists = remember { List(6) { mutableStateListOf("", "", "", "", "") } }
     var enabledColumnIndex by remember { mutableIntStateOf(0) }
     val colorChanger = ColorChanger()
+    var isJokerEnabled by remember {
+        mutableStateOf(true)
+    }
+
+    val changeJokerState = {
+        isJokerEnabled = !isJokerEnabled
+    }
 
     val incrementColumnIndex = {
         if (enabledColumnIndex < 4) {
@@ -154,7 +142,8 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
         repository = PlayerRepository(playerDAO = db.playerDao()),
         coroutineScope = rememberCoroutineScope(),
         sharedViewModel = viewModel(factory = factory),
-        context = LocalContext.current
+        context = LocalContext.current,
+        changeJokerState
     )
 
     when (gameState) {
@@ -170,7 +159,10 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
             ) {
                 colorChanger.updateColors(numberOfTries, backgroundColorsList, fontColorsList)
                 //colorChanger.updateColors(numberOfTries, backgroundColorsList)
-                Column(modifier = Modifier.padding(top = 60.dp)) {
+                Column(
+                    modifier = Modifier.padding(top = 60.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     for (i in 0..4) {
                         textfieldTempl(
                             //true,
@@ -186,11 +178,13 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
                     }
 
                     Divider(
-                        modifier = Modifier.padding(0.dp, 10.dp), color = MaterialTheme.colorScheme.secondary, thickness = 2.dp
+                        modifier = Modifier.padding(0.dp, 10.dp), color = MaterialTheme.colorScheme.secondary, thickness = 4.dp
                     )
                     button("Guess", onClick = {
                         keyHandler.handleGuess(incrementColumnIndex, incrementNumberOfTries)
                     })
+                    Spacer(modifier = Modifier.size(30.dp))
+                    button(buttonText = "Joker", onClick = { keyHandler.handleJoker() }, isJokerEnabled)
                 }
             }
         GameState.LOST -> losingPanel(25, navController)
@@ -235,7 +229,7 @@ fun textfieldTempl(
                 },
                 //shape = RoundedCornerShape(8.dp),
                 modifier = Modifier
-                    .width(82.dp)
+                    .width(78.dp)
                     .padding(top = 10.dp, start = 8.dp, end = 8.dp)
                     .focusRequester(focusRequesters[index])
                     .onKeyEvent { keyEvent ->

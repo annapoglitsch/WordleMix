@@ -1,23 +1,12 @@
 package com.example.wordlemix.game
 
 import android.content.Context
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardCapitalization.Companion.Words
-import androidx.compose.ui.text.toUpperCase
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wordlemix.PlayerPreferences
-import com.example.wordlemix.SharedViewModelFactory
 import com.example.wordlemix.data.Player
-import com.example.wordlemix.data.PlayerDatabase
 import com.example.wordlemix.data.PlayerRepository
-import com.example.wordlemix.data.getPlayers
 import com.example.wordlemix.viewModel.SharedViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import java.io.File
-import java.nio.file.Path
 import kotlin.random.Random
 
 class GameLogic {
@@ -90,7 +79,7 @@ class GameLogic {
  }
 
 
- fun receiveScore(gameState: GameState, coroutineScope: CoroutineScope, context: Context,sharedViewModel: SharedViewModel,repository:PlayerRepository) {
+ fun receiveScore(gameState: GameState, coroutineScope: CoroutineScope, context: Context, sharedViewModel: SharedViewModel, repository:PlayerRepository) {
      var player: Player;
      player = Player(username = "test", record = 1)
      val playerPreferences: PlayerPreferences = PlayerPreferences(context)

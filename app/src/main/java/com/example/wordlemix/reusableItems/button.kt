@@ -20,9 +20,10 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun button(buttonText: String, onClick: () -> Unit = {}) {
+fun button(buttonText: String, onClick: () -> Unit = {}, isEnabled: Boolean = true) {
     Button(
         onClick = onClick,
+        enabled = isEnabled,
         shape = CutCornerShape(10),
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 10.dp,

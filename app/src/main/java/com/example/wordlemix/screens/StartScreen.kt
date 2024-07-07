@@ -1,8 +1,8 @@
 package com.example.wordlemix.screens
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
-import android.content.res.Resources
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,10 +15,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -60,6 +60,9 @@ fun StartScreen(
 
 @Composable
 fun StartScreenStructure(navController: NavController) {
+    val context = LocalContext.current
+    val playerPreferences : PlayerPreferences = PlayerPreferences(context)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -78,16 +81,18 @@ fun StartScreenStructure(navController: NavController) {
             buttonText = "Settings",
             onClick = { navController.navigate(ScreenRoutes.SettingsScreen.route) })
     }
+
 }
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun initGuest(sharedViewModel: SharedViewModel) {
-    val playerPreferences: PlayerPreferences = PlayerPreferences(LocalContext.current)
+    val context = LocalContext.current
+    val playerPreferences: PlayerPreferences = PlayerPreferences(context)
     //playerPreferences.saveUsername("")
     println(playerPreferences.getUsername())
     val coroutineScope = rememberCoroutineScope()
-
+    val showPop by sharedViewModel.showPopUp.collectAsState()
     val db = PlayerDatabase.getDatabase(LocalContext.current)
     val repository = PlayerRepository(playerDAO = db.playerDao())
 
@@ -105,7 +110,19 @@ fun initGuest(sharedViewModel: SharedViewModel) {
             }
         }
     }
+    if(showPop){
+       showPopUp(context = context, "Your current username is: ${playerPreferences.getUsername().toString()}")
+        sharedViewModel.popUpShown()
+    }
 }
-
+fun showPopUp(context: Context, message: String) {
+    val builder = AlertDialog.Builder(context)
+    builder.setMessage(message)
+        .setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+    val dialog = builder.create()
+    dialog.show()
+}
 
 
