@@ -1,5 +1,10 @@
 package com.example.wordlemix.game
 
+import androidx.compose.ui.platform.LocalContext
+import com.example.wordlemix.PlayerPreferences
+import com.example.wordlemix.data.Player
+import com.example.wordlemix.data.PlayerRepository
+import com.example.wordlemix.data.getPlayers
 import java.io.File
 import java.nio.file.Path
 import kotlin.random.Random
@@ -61,10 +66,17 @@ class GameLogic {
         return GameState.IN_PROGRESS
     }
 
-    fun getScore(numberOfTries: Int, guess: String, word: String) {
-        val gameState = getGameState(numberOfTries, guess, word)
-        if (gameState == GameState.WON) {
 
+    fun receiveScore(player: Player, gameState: GameState) {
+
+        if (gameState == GameState.WON){
+                player.record += 25
+        }
+        if (gameState == GameState.LOST){
+            if ((player.record - 25) <= 0){
+                player.record = 0
+            }
+            player.record -= 25
         }
     }
 }

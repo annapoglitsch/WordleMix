@@ -62,7 +62,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.wordlemix.PlayerPreferences
+import com.example.wordlemix.SharedViewModelFactory
+import com.example.wordlemix.data.PlayerDatabase
+import com.example.wordlemix.data.PlayerRepository
 import com.example.wordlemix.game.ColorChanger
 import com.example.wordlemix.game.GameState
 import com.example.wordlemix.ui.theme.WordleMixTheme
@@ -107,6 +113,17 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
     val textFieldLists = remember { List(6) { mutableStateListOf("", "", "", "", "") } }
     var enabledColumnIndex by remember { mutableIntStateOf(0) }
     val colorChanger = ColorChanger()
+
+    val context = LocalContext.current
+
+    var playerPreferences: PlayerPreferences
+    playerPreferences = PlayerPreferences(context)
+
+    val db = PlayerDatabase.getDatabase(context)
+    val repository = PlayerRepository(playerDAO = db.playerDao())
+    val factory = SharedViewModelFactory(repository = repository)
+    val sharedViewModel : SharedViewModel = viewModel(factory = factory)
+    val coroutineScope = rememberCoroutineScope()
 
     val incrementColumnIndex = {
         if (enabledColumnIndex < 4) {
@@ -172,10 +189,14 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
                     })
                 }
             }
-
         GameState.LOST -> losingPanel(25, navController)
         GameState.WON -> winningPanel(25, navController)
+
+
     }
+    val playerUsername = playerPreferences.getUsername()
+
+    gameLogic.receiveScore(player = repository.getByUsername(playerUsername!!), gameState)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

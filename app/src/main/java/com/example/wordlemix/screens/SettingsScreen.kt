@@ -130,12 +130,12 @@ fun UsernameSettingInput() {
         TextField(
             value = inputText,
             onValueChange = { inputText = it },
-            label = { Text("Enter username") },
+            label = { Text("Enter Username") },
             modifier = Modifier.height(30.dp),
         )
         Spacer(modifier = Modifier.size(20.dp))
         button(
-            "save username",
+            "Save Username",
             onClick = {
                 playerPreferences.saveUsername(inputText)
                 username = inputText
@@ -152,7 +152,7 @@ fun UsernameSettingInput() {
 @Composable
 fun ThemeSwitchToggle(
     darkTheme: Boolean = false,
-    size: Dp = 100.dp,
+    size: Dp = 70.dp,
     iconSize: Dp = size / 3,
     padding: Dp = 10.dp,
     borderWidth: Dp = 1.dp,

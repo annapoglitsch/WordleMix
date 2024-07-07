@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -50,11 +51,7 @@ fun ScoreBoard(
     route: String,
     sharedViewModel: SharedViewModel
 ) {
-
     val db = PlayerDatabase.getDatabase(LocalContext.current)
-    val repository = PlayerRepository(playerDAO = db.playerDao())
-    val factory = SharedViewModelFactory(repository = repository)
-    val sharedViewModel : SharedViewModel = viewModel(factory = factory)
     val coroutineScope = rememberCoroutineScope()
 
     insertSampleData(coroutineScope,db.playerDao())
@@ -89,7 +86,7 @@ fun ScoreBoard(
                 Column(
                     Modifier
                         .fillMaxSize()
-                        .background(color = Color(0xFFAAD6F3))
+                        .background(color = MaterialTheme.colorScheme.background)
                         .padding(top = 16.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally

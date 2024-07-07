@@ -49,4 +49,10 @@ class SharedViewModel(private val repository: PlayerRepository) : ViewModel() {
             repository.deletePlayer(player)
         }
     }
+
+    suspend fun getPlayerById(id: Int){
+        viewModelScope.launch {
+            repository.getById(id)
+        }
+    }
 }

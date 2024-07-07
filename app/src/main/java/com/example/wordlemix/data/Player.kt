@@ -10,7 +10,7 @@ data class Player(
     @PrimaryKey(autoGenerate = true)
     val dbId: Long = 0,
     val username: String,
-    val record: Int
+    var record: Int
     ){
     override fun equals(other: Any?): Boolean {
         return super.equals(other)
