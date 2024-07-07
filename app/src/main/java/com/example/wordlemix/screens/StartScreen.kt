@@ -84,13 +84,14 @@ fun StartScreenStructure(navController: NavController) {
 @Composable
 fun initGuest() {
     val playerPreferences: PlayerPreferences = PlayerPreferences(LocalContext.current)
+    //playerPreferences.saveUsername("")
     println(playerPreferences.getUsername())
     val coroutineScope = rememberCoroutineScope()
 
     val db = PlayerDatabase.getDatabase(LocalContext.current)
     val repository = PlayerRepository(playerDAO = db.playerDao())
 
-    if (playerPreferences.getUsername() == ""){
+    if (playerPreferences.getUsername() == null){
         playerPreferences.saveUsername("Guest")
         coroutineScope.launch {
             val existingPlayer: Player? = try {

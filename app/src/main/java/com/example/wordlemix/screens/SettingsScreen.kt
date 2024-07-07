@@ -33,6 +33,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
@@ -54,7 +55,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.wear.compose.material.Text
 import com.example.wordlemix.PlayerPreferences
 import com.example.wordlemix.R
 import com.example.wordlemix.data.Player
@@ -140,7 +140,7 @@ fun UsernameSettingInput(sharedViewModel: SharedViewModel,repository: PlayerRepo
             value = inputText,
             onValueChange = { inputText = it },
             //label = { Text(username) },
-            modifier = Modifier.height(30.dp),
+            //modifier = Modifier.height(30.dp),
         )
         Text(
             text = "You entered: $inputText",

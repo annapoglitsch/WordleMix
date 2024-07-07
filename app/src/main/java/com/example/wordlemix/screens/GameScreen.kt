@@ -63,6 +63,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -181,7 +182,7 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
                     }
 
                     Divider(
-                        modifier = Modifier.padding(10.dp), color = Color.Black, thickness = 2.dp
+                        modifier = Modifier.padding(0.dp, 10.dp), color = MaterialTheme.colorScheme.secondary, thickness = 2.dp
                     )
                     button("Guess", onClick = {
                         keyHandler.handleGuess(incrementColumnIndex, incrementNumberOfTries)
@@ -211,7 +212,7 @@ fun textfieldTempl(
     Row {
         textFieldList.forEachIndexed { index, text ->
 
-            TextField(textStyle = TextStyle(
+            OutlinedTextField(textStyle = TextStyle(
                 color = fontColors[index], fontSize = 30.sp, textAlign = TextAlign.Center
             ),
                 colors = TextFieldDefaults.textFieldColors(containerColor = backgroundColors[index]),
@@ -228,9 +229,9 @@ fun textfieldTempl(
 
                     }
                 },
-                shape = RoundedCornerShape(8.dp),
+                //shape = RoundedCornerShape(8.dp),
                 modifier = Modifier
-                    .width(80.dp)
+                    .width(82.dp)
                     .padding(top = 10.dp, start = 8.dp, end = 8.dp)
                     .focusRequester(focusRequesters[index])
                     .onKeyEvent { keyEvent ->
