@@ -65,6 +65,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.ui.unit.dp
 import com.example.wordlemix.game.ColorChanger
 import com.example.wordlemix.game.GameState
+import com.example.wordlemix.ui.theme.WordleMixTheme
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -74,16 +75,19 @@ fun GameScreen(navController: NavController, route: String, sharedViewModel: Sha
 
     val gameLogic = GameLogic()
     val word = gameLogic.chooseRandomWord()
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
-            topAppBar.TopAppBar(
-                titleText = "Today's WordleMix", icon = true, navController = navController
-            )
-        }, content = {
-            GameScreenStructure(gameLogic, word, navController)
-        })
+    val isDark = sharedViewModel.isDarkBool.collectAsState()
+    WordleMixTheme(darkTheme = isDark.value) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
+                topAppBar.TopAppBar(
+                    titleText = "Today's WordleMix", icon = true, navController = navController
+                )
+            }, content = {
+                GameScreenStructure(gameLogic, word, navController)
+            })
+        }
     }
 }
 
@@ -139,7 +143,7 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(vertical = 10.dp)
-                    .background(color = Color(0xFFAAD6F3)),
+                    .background(color = MaterialTheme.colorScheme.background),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(50.dp)
             ) {
@@ -163,11 +167,9 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
                     Divider(
                         modifier = Modifier.padding(10.dp), color = Color.Black, thickness = 2.dp
                     )
-                    Button(modifier = Modifier.align(Alignment.CenterHorizontally), onClick = {
+                    button("Guess", onClick = {
                         keyHandler.handleGuess(incrementColumnIndex, incrementNumberOfTries)
-                    }) {
-                        Text("Guess")
-                    }
+                    })
                 }
             }
 

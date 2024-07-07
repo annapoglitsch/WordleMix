@@ -60,4 +60,11 @@ class GameLogic {
 
         return GameState.IN_PROGRESS
     }
+
+    fun getScore(numberOfTries: Int, guess: String, word: String) {
+        val gameState = getGameState(numberOfTries, guess, word)
+        if (gameState == GameState.WON) {
+
+        }
+    }
 }

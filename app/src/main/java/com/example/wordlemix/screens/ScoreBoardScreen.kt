@@ -32,6 +32,7 @@ import com.example.wordlemix.data.PlayerDAO
 import com.example.wordlemix.data.PlayerDatabase
 import com.example.wordlemix.data.PlayerRepository
 import com.example.wordlemix.reusableItems.AppBars
+import com.example.wordlemix.ui.theme.WordleMixTheme
 import com.example.wordlemix.viewModel.SharedViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.firstOrNull
@@ -68,40 +69,47 @@ fun ScoreBoard(
     println("Hello2")
 
     val topAppBar = AppBars()
-    Surface(
-        modifier = Modifier
-            .fillMaxSize(),
-    ) {
-
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                topAppBar.TopAppBar(titleText = "Scoreboard", icon = true, navController = navController)
-            }
+    val isDark = sharedViewModel.isDarkBool.collectAsState()
+    WordleMixTheme(darkTheme = isDark.value) {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize(),
         ) {
-            Column(
-                Modifier
-                    .fillMaxSize()
-                    .background(color = Color(0xFFAAD6F3))
-                    .padding(top = 16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
+
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                topBar = {
+                    topAppBar.TopAppBar(
+                        titleText = "Scoreboard",
+                        icon = true,
+                        navController = navController
+                    )
+                }
+            ) {
+                Column(
+                    Modifier
+                        .fillMaxSize()
+                        .background(color = Color(0xFFAAD6F3))
+                        .padding(top = 16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 
 
-            }
-            val userList by sharedViewModel.players.collectAsState()
+                }
+                val userList by sharedViewModel.players.collectAsState()
 
-            LazyColumn {
-                userList.forEach { user ->
-                    item {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                        ) {
-                            Text(text = user.username, modifier = Modifier.weight(1f))
-                            Text(text = user.record.toString(), modifier = Modifier.weight(1f))
+                LazyColumn {
+                    userList.forEach { user ->
+                        item {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp)
+                            ) {
+                                Text(text = user.username, modifier = Modifier.weight(1f))
+                                Text(text = user.record.toString(), modifier = Modifier.weight(1f))
+                            }
                         }
                     }
                 }

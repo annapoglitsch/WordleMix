@@ -98,14 +98,13 @@ fun SettingsScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
+                    UsernameSettingInput()
+                    Spacer(modifier = Modifier.size(20.dp))
+                    button(buttonText = "ScoreBoard", onClick = {navController.navigate(ScreenRoutes.ScoreBoardScreen.route) })
+                    Spacer(modifier = Modifier.size(20.dp))
                     ThemeSwitchToggle(
                         darkTheme = isDark.value,
                         onClick = { sharedViewModel.setBoolean(!isDark.value) })
-                    Spacer(modifier = Modifier.size(10.dp))
-                    button(buttonText = "ScoreBoard", onClick = {navController.navigate(ScreenRoutes.ScoreBoardScreen.route) })
-                    Spacer(modifier = Modifier.size(10.dp))
-                    UsernameSettingInput()
                 }
 
             }
@@ -127,45 +126,22 @@ fun UsernameSettingInput() {
     var inputText by remember { mutableStateOf("") }
 
 
-    Column {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         TextField(
             value = inputText,
             onValueChange = { inputText = it },
             label = { Text("Enter username") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.height(30.dp),
         )
-
+        Spacer(modifier = Modifier.size(20.dp))
         button(
             "save username",
             onClick = {
                 playerPreferences.saveUsername(inputText)
                 username = inputText
-            }
+            },
         )
     }
-}
-
-@Composable
-fun ThemeSwitch(darkTheme: Boolean = false, content: @Composable () -> Unit) {
-    val color = if (darkTheme) {
-        darkColorScheme(
-            primary = Color(0xFFAAD6F3),
-            primaryContainer = Color.Black,
-            secondary = Color.Gray,
-        )
-    } else {
-        lightColorScheme(
-            primary = Color(0xFFF8BE85),
-            primaryContainer = Color(0xFFAAD6F3),
-            secondary = Color.Gray
-
-            )
-    }
-    MaterialTheme(
-        colorScheme = color,
-        typography = Typography(),
-        content = content
-    )
 }
 
 
@@ -197,7 +173,7 @@ fun ThemeSwitchToggle(
         .clickable {
             onClick()
         }
-        .background(MaterialTheme.colorScheme.secondaryContainer)
+        .background(MaterialTheme.colorScheme.secondary)
     ) {
         Box(
             modifier = Modifier
@@ -205,7 +181,7 @@ fun ThemeSwitchToggle(
                 .offset(x = offset)
                 .padding(all = padding)
                 .clip(shape = toggleShape)
-                .background(MaterialTheme.colorScheme.primary)
+                .background(MaterialTheme.colorScheme.tertiary)
         ) {}
         Row(
             modifier = Modifier
@@ -237,8 +213,8 @@ fun ThemeSwitchToggle(
                     modifier = Modifier.size(iconSize),
                     imageVector = ImageVector.vectorResource(id = R.drawable.baseline_light_mode_24),
                     contentDescription = "Light Mode",
-                    tint = if (darkTheme) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.secondaryContainer
+                    tint = if (darkTheme) MaterialTheme.colorScheme.secondaryContainer
+                    else MaterialTheme.colorScheme.primary
                 )
             }
         }
