@@ -22,7 +22,7 @@ interface PlayerDAO {
     fun get(id: Int): Flow<Player>
 
     @Query("SELECT * from player where username=:username")
-    fun getByUsername(username: String): Player
+    suspend fun getByUsername(username: String): Player
 
     @Query("SELECT * from player")
     fun getAll(): Flow<List<Player>>

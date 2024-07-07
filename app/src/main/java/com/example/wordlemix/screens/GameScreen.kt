@@ -1,6 +1,7 @@
 package com.example.wordlemix.screens
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.KeyEvent.KEYCODE_DEL
 import android.view.KeyEvent.KEYCODE_ENTER
 import androidx.compose.foundation.background
@@ -72,6 +73,8 @@ import com.example.wordlemix.data.PlayerRepository
 import com.example.wordlemix.game.ColorChanger
 import com.example.wordlemix.game.GameState
 import com.example.wordlemix.ui.theme.WordleMixTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -91,14 +94,15 @@ fun GameScreen(navController: NavController, route: String, sharedViewModel: Sha
                     titleText = "Today's WordleMix", icon = true, navController = navController
                 )
             }, content = {
-                GameScreenStructure(gameLogic, word, navController)
+                GameScreenStructure(gameLogic, word, navController, sharedViewModel)
             })
         }
     }
 }
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavController) {
+fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavController, sharedViewModel: SharedViewModel) {
     var numberOfTries by remember { mutableIntStateOf(0) }
     val initialFontColor = listOf(Color.Black, Color.Black, Color.Black, Color.Black, Color.Black)
     val initialBackgroundColor =
@@ -113,17 +117,6 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
     val textFieldLists = remember { List(6) { mutableStateListOf("", "", "", "", "") } }
     var enabledColumnIndex by remember { mutableIntStateOf(0) }
     val colorChanger = ColorChanger()
-
-    val context = LocalContext.current
-
-    var playerPreferences: PlayerPreferences
-    playerPreferences = PlayerPreferences(context)
-
-    val db = PlayerDatabase.getDatabase(context)
-    val repository = PlayerRepository(playerDAO = db.playerDao())
-    val factory = SharedViewModelFactory(repository = repository)
-    val sharedViewModel : SharedViewModel = viewModel(factory = factory)
-    val coroutineScope = rememberCoroutineScope()
 
     val incrementColumnIndex = {
         if (enabledColumnIndex < 4) {
@@ -140,6 +133,8 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
         }
     }
 
+    var db = PlayerDatabase.getDatabase(LocalContext.current)
+
     var keyHandler = KeyHandler(
         word,
         gameLogic,
@@ -150,7 +145,11 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
         colorChanger,
         numberOfTries,
         enabledColumnIndex,
-        setGameState = { gameStateParam -> gameState = gameStateParam }
+        setGameState = { gameStateParam -> gameState = gameStateParam },
+        db = PlayerDatabase.getDatabase(LocalContext.current),
+        repository = PlayerRepository(playerDAO = db.playerDao()),
+        coroutineScope = rememberCoroutineScope(),
+        context = LocalContext.current
     )
 
     when (gameState) {
@@ -191,12 +190,7 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
             }
         GameState.LOST -> losingPanel(25, navController)
         GameState.WON -> winningPanel(25, navController)
-
-
     }
-    val playerUsername = playerPreferences.getUsername()
-
-    gameLogic.receiveScore(player = repository.getByUsername(playerUsername!!), gameState)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

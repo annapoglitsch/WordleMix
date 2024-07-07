@@ -42,6 +42,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,12 +57,16 @@ import androidx.navigation.NavController
 import androidx.wear.compose.material.Text
 import com.example.wordlemix.PlayerPreferences
 import com.example.wordlemix.R
+import com.example.wordlemix.data.Player
+import com.example.wordlemix.data.PlayerDatabase
+import com.example.wordlemix.data.PlayerRepository
 import com.example.wordlemix.navigation.ScreenRoutes
 import com.example.wordlemix.reusableItems.AppBars
 import com.example.wordlemix.ui.theme.WordleMixTheme
 import com.example.wordlemix.viewModel.SharedViewModel
 import com.example.wordlemix.reusableItems.button
-
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -72,6 +77,8 @@ fun SettingsScreen(
     sharedViewModel: SharedViewModel
 )  {
 
+    val db = PlayerDatabase.getDatabase(LocalContext.current)
+    val repository = PlayerRepository(playerDAO = db.playerDao())
     val topAppBar = AppBars()
     val isDark = sharedViewModel.isDarkBool.collectAsState()
     WordleMixTheme(darkTheme = isDark.value) {
@@ -98,7 +105,7 @@ fun SettingsScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    UsernameSettingInput()
+                    UsernameSettingInput(sharedViewModel,repository)
                     Spacer(modifier = Modifier.size(20.dp))
                     button(buttonText = "ScoreBoard", onClick = {navController.navigate(ScreenRoutes.ScoreBoardScreen.route) })
                     Spacer(modifier = Modifier.size(20.dp))
@@ -115,14 +122,16 @@ fun SettingsScreen(
 }
 
 @Composable
-fun UsernameSettingInput() {
+fun UsernameSettingInput(sharedViewModel: SharedViewModel,repository: PlayerRepository) {
     var text by remember { mutableStateOf("") }
+
     val context = LocalContext.current
 
-    var playerPreferences: PlayerPreferences
-    playerPreferences = PlayerPreferences(context)
+    val coroutineScope = rememberCoroutineScope()
 
-    var username by remember { mutableStateOf(PlayerPreferences(context).getUsername() ?: "") }
+    val playerPreferences: PlayerPreferences = PlayerPreferences(context)
+
+    var username by remember { mutableStateOf(PlayerPreferences(context).getUsername() ?: "Enter Username") }
     var inputText by remember { mutableStateOf("") }
 
 
@@ -130,8 +139,12 @@ fun UsernameSettingInput() {
         TextField(
             value = inputText,
             onValueChange = { inputText = it },
-            label = { Text("Enter Username") },
+            //label = { Text(username) },
             modifier = Modifier.height(30.dp),
+        )
+        Text(
+            text = "You entered: $inputText",
+            modifier = Modifier.padding(top = 8.dp)
         )
         Spacer(modifier = Modifier.size(20.dp))
         button(
@@ -139,7 +152,11 @@ fun UsernameSettingInput() {
             onClick = {
                 playerPreferences.saveUsername(inputText)
                 username = inputText
-            },
+                coroutineScope.launch {
+                    if (playerPreferences.getUsername()?.let { repository.getByUsername(it) } == null)
+                        repository.addPlayer(Player(username = playerPreferences.getUsername()!!, record = 0))
+                }
+            }
         )
     }
 }

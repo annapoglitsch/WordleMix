@@ -44,7 +44,7 @@ import kotlinx.coroutines.launch
 private const val PREFS_NAME = "sample_data_prefs"
 private const val KEY_DATA_INSERTED = "data_inserted"
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "CoroutineCreationDuringComposition")
 @Composable
 fun ScoreBoard(
     navController: NavController,
@@ -54,16 +54,11 @@ fun ScoreBoard(
     val db = PlayerDatabase.getDatabase(LocalContext.current)
     val coroutineScope = rememberCoroutineScope()
 
-    insertSampleData(coroutineScope,db.playerDao())
-
     val context = LocalContext.current
 
     var playerPreferences: PlayerPreferences
     playerPreferences = PlayerPreferences(context)
 
-    println("Hello1")
-    println(playerPreferences.getUsername())
-    println("Hello2")
 
     val topAppBar = AppBars()
     val isDark = sharedViewModel.isDarkBool.collectAsState()
@@ -95,9 +90,12 @@ fun ScoreBoard(
 
                 }
                 val userList by sharedViewModel.players.collectAsState()
+                val sortedUserList = userList.sortedByDescending { it.record }
 
-                LazyColumn {
-                    userList.forEach { user ->
+                LazyColumn(
+                    modifier = Modifier.padding(top = 40.dp)
+                ) {
+                    sortedUserList.forEach { user ->
                         item {
                             Row(
                                 modifier = Modifier
@@ -111,17 +109,6 @@ fun ScoreBoard(
                     }
                 }
             }
-        }
-    }
-}
-
-fun insertSampleData(coroutineScope: CoroutineScope, playerDAO: PlayerDAO) {
-    coroutineScope.launch {
-        val players = playerDAO.getAll().firstOrNull()
-        if (players.isNullOrEmpty()) {
-            playerDAO.add(Player(username = "Anna", record = 3000))
-            playerDAO.add(Player(username = "Stefan", record = 2000))
-            playerDAO.add(Player(username = "Manu", record = 1000))
         }
     }
 }

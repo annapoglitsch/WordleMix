@@ -1,6 +1,9 @@
 package com.example.wordlemix.data
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 
 class PlayerRepository(private val playerDAO: PlayerDAO) {
 
@@ -14,5 +17,5 @@ class PlayerRepository(private val playerDAO: PlayerDAO) {
 
     fun getById(id: Int): Flow<Player?> = playerDAO.get(id)
 
-    fun getByUsername(username: String): Player = playerDAO.getByUsername(username)
+    suspend fun getByUsername(username: String): Player = playerDAO.getByUsername(username)
 }

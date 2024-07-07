@@ -1,8 +1,14 @@
 package com.example.wordlemix.game
 
+import android.content.Context
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import com.example.wordlemix.data.PlayerDatabase
+import com.example.wordlemix.data.PlayerRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlin.math.absoluteValue
 
 class KeyHandler(
@@ -15,7 +21,11 @@ class KeyHandler(
     val colorChanger: ColorChanger,
     var numberOfTries: Int,
     var enabledColumnIndex: Int,
-    var setGameState: (GameState) -> Unit
+    var setGameState: (GameState) -> Unit,
+    val db: PlayerDatabase,
+    val repository: PlayerRepository,
+    val coroutineScope: CoroutineScope,
+    val context: Context
 ) {
 
     fun handleGuess(incrementColumnIndex: () -> Unit, incrementNumberOfTries: () -> Unit) {
@@ -48,6 +58,7 @@ class KeyHandler(
         //numberOfTries++
         incrementNumberOfTries()
         setGameState(gameLogic.getGameState(numberOfTries, guess, word))
+        gameLogic.receiveScore(gameLogic.getGameState(numberOfTries, guess, word), coroutineScope, context, repository)
         /*if (enabledColumnIndex < 4) {
             enabledColumnIndex++
         }*/

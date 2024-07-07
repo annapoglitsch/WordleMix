@@ -1,8 +1,10 @@
 package com.example.wordlemix.viewModel
 
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.wordlemix.PlayerPreferences
 import com.example.wordlemix.data.Player
 import com.example.wordlemix.data.PlayerRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,6 +50,21 @@ class SharedViewModel(private val repository: PlayerRepository) : ViewModel() {
         viewModelScope.launch {
             repository.deletePlayer(player)
         }
+    }
+
+    suspend fun updatePlayer(player: Player){
+        viewModelScope.launch {
+            repository.updatePlayer(player)
+        }
+    }
+
+    suspend fun getByUsername(username: String): Player{
+        var player : Player
+        player = Player(username="error", record = 1)
+        viewModelScope.launch {
+            player = repository.getByUsername(username)
+        }
+        return player
     }
 
     suspend fun getPlayerById(id: Int){
