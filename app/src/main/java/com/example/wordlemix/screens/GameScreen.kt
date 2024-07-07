@@ -223,7 +223,7 @@ fun textfieldTempl(
                 },
                 //shape = RoundedCornerShape(8.dp),
                 modifier = Modifier
-                    .width(82.dp)
+                    .width(78.dp)
                     .padding(top = 10.dp, start = 8.dp, end = 8.dp)
                     .focusRequester(focusRequesters[index])
                     .onKeyEvent { keyEvent ->
