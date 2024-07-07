@@ -11,10 +11,6 @@ import kotlin.random.Random
 
 class GameLogic {
 
-    /*val jsonFile = File("game/words.json")
-    val jsonString = jsonFile.readText()
-    val gson = Gson()
-    val wordObject: GuessWords = gson.fromJson(jsonString, GuessWords::class.java)*/
     var words = listOf(
         "APPLE", "BRAVE", "CHAIR", "DOUBT", "EAGER", "FANCY", "GIANT", "HEART", "INDEX", "JOKER",
         "KNEEL", "LAUGH", "MIGHT", "NIGHT", "OASIS", "PAINT", "QUICK", "RIDER", "SWORD", "THUMB",

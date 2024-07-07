@@ -22,21 +22,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
-
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.Typography
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -64,7 +55,6 @@ import com.example.wordlemix.reusableItems.AppBars
 import com.example.wordlemix.ui.theme.WordleMixTheme
 import com.example.wordlemix.viewModel.SharedViewModel
 import com.example.wordlemix.reusableItems.button
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 
@@ -139,7 +129,6 @@ fun UsernameSettingInput(sharedViewModel: SharedViewModel) {
             value = inputText,
             onValueChange = { inputText = it },
             label = { Text("Enter Username") },
-            //modifier = Modifier.height(30.dp),
         )
         Text(
             text = "You entered: $inputText",
@@ -163,7 +152,6 @@ fun UsernameSettingInput(sharedViewModel: SharedViewModel) {
 
 
 
-//ToDo: default background should be Color(0xFFAAD6F3) (lightmode)
 
 //followed this tutorial: https://www.youtube.com/watch?v=Nvphdmi-6qc
 @Composable

@@ -25,11 +25,6 @@ class SharedViewModel(private val repository: PlayerRepository) : ViewModel() {
         }
     }
 
-    suspend fun toggleDoneState(player: Player){
-        viewModelScope.launch {
-            repository.updatePlayer(player)
-        }
-    }
     fun popUpShown() {
         viewModelScope.launch {
             _showPopUp.value = false
@@ -61,7 +56,4 @@ class SharedViewModel(private val repository: PlayerRepository) : ViewModel() {
         return player
     }
 
-    suspend fun getPlayerById(id: Int){
-        repository.getById(id)
-    }
 }

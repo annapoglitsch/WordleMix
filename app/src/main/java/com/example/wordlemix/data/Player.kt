@@ -3,7 +3,7 @@ package com.example.wordlemix.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity//(indices = [Index(value = ["username"], unique = true)])
+@Entity
 data class Player(
     @PrimaryKey(autoGenerate = true)
     val dbId: Long = 0,

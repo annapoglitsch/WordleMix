@@ -10,7 +10,7 @@ class ColorChanger {
                 updateSingleColumn(i, backgroundColorsList, fontColorList, Color.LightGray, Color.Black)
             }
             else {
-                updateSingleColumn(i, backgroundColorsList, fontColorList, Color.DarkGray, Color.White)
+                updateSingleColumn(i, backgroundColorsList, fontColorList, Color.DarkGray, Color.Black)
             }
         }
     }

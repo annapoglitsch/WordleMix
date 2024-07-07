@@ -125,7 +125,6 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
     val db = PlayerDatabase.getDatabase(LocalContext.current)
     val repository = PlayerRepository(playerDAO = db.playerDao())
     val factory = SharedViewModelFactory(repository = repository)
-    val sharedViewModel : SharedViewModel = viewModel(factory = factory)
 
     var keyHandler = KeyHandler(
         word,
@@ -158,7 +157,6 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
                 verticalArrangement = Arrangement.spacedBy(50.dp)
             ) {
                 colorChanger.updateColors(numberOfTries, backgroundColorsList, fontColorsList)
-                //colorChanger.updateColors(numberOfTries, backgroundColorsList)
                 Column(
                     modifier = Modifier.padding(top = 60.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -259,9 +257,7 @@ fun textfieldTempl(
                         keyHandler.handleGuess(incrementFocusIndex, incrementNumberOfTries)
                     }
                 )
-            )/*.onKeyEvent { keyEvent ->
-                println("Key code: ${keyEvent}")
-            false})*/
+            )
 
         }
     }
@@ -275,7 +271,6 @@ fun winningPanel(scoreIncrease: Int, navController: NavController) {
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
             .fillMaxSize(),
-        //.height(500.dp),
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "You won!")
@@ -294,7 +289,6 @@ fun losingPanel(scoreDecrease: Int, navController: NavController) {
         modifier = Modifier
             .background(color = MaterialTheme.colorScheme.background)
             .fillMaxSize(),
-        //.height(500.dp),
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "You lost!")

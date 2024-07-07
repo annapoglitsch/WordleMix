@@ -61,7 +61,6 @@ fun StartScreen(
 @Composable
 fun StartScreenStructure(navController: NavController) {
     val context = LocalContext.current
-    val playerPreferences : PlayerPreferences = PlayerPreferences(context)
 
     Column(
         modifier = Modifier
@@ -89,12 +88,10 @@ fun StartScreenStructure(navController: NavController) {
 fun initGuest(sharedViewModel: SharedViewModel) {
     val context = LocalContext.current
     val playerPreferences: PlayerPreferences = PlayerPreferences(context)
-    //playerPreferences.saveUsername("")
     println(playerPreferences.getUsername())
     val coroutineScope = rememberCoroutineScope()
     val showPop by sharedViewModel.showPopUp.collectAsState()
     val db = PlayerDatabase.getDatabase(LocalContext.current)
-    val repository = PlayerRepository(playerDAO = db.playerDao())
 
     if (playerPreferences.getUsername() == null){
         playerPreferences.saveUsername("Guest")

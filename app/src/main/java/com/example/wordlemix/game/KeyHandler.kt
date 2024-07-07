@@ -30,12 +30,6 @@ class KeyHandler(
     fun handleGuess(incrementColumnIndex: () -> Unit, incrementNumberOfTries: () -> Unit) {
         val currentTextFieldList = textFieldLists[numberOfTries]
         val guess: String = currentTextFieldList.joinToString("")
-        //println(word)
-        //println(numberOfTries)
-        //println(gameLogic.isCorrectWord(word, guess))
-
-        //println(gameLogic.checkCorrectLetterPositions(word, guess))
-        //println(gameLogic.checkIfLetterInWord(word, guess))
 
         val correctLetterPositions = gameLogic.checkCorrectLetterPositions(word, guess)
         val letterInWordPositions = gameLogic.checkIfLetterInWord(word, guess)
@@ -54,21 +48,12 @@ class KeyHandler(
         isFinished(finished)
 
 
-        //numberOfTries++
         incrementNumberOfTries()
         setGameState(gameLogic.getGameState(numberOfTries, guess, word))
         gameLogic.receiveScore(gameLogic.getGameState(numberOfTries, guess, word), coroutineScope, context, sharedViewModel ,repository)
-        /*if (enabledColumnIndex < 4) {
-            enabledColumnIndex++
-        }*/
         incrementColumnIndex()
         println(word)
 
-        /*if (numberOfTries < focusRequesters.size) {
-            focusRequesters[numberOfTries][0].requestFocus()
-        }*/
-
-        //colorChanger.updateColors(numberOfTries, backgroundColorsList)
     }
 
     fun handleJoker() {

@@ -1,7 +1,6 @@
 package com.example.wordlemix.screens
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,13 +38,9 @@ fun ScoreBoard(
     route: String,
     sharedViewModel: SharedViewModel
 ) {
-    val db = PlayerDatabase.getDatabase(LocalContext.current)
-    val coroutineScope = rememberCoroutineScope()
 
     val context = LocalContext.current
 
-    var playerPreferences: PlayerPreferences
-    playerPreferences = PlayerPreferences(context)
 
 
     val topAppBar = AppBars()
