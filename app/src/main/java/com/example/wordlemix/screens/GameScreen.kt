@@ -118,6 +118,13 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
     val textFieldLists = remember { List(6) { mutableStateListOf("", "", "", "", "") } }
     var enabledColumnIndex by remember { mutableIntStateOf(0) }
     val colorChanger = ColorChanger()
+    var isJokerEnabled by remember {
+        mutableStateOf(true)
+    }
+
+    val changeJokerState = {
+        isJokerEnabled = !isJokerEnabled
+    }
 
     val incrementColumnIndex = {
         if (enabledColumnIndex < 4) {
@@ -150,7 +157,8 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
         db = PlayerDatabase.getDatabase(LocalContext.current),
         repository = PlayerRepository(playerDAO = db.playerDao()),
         coroutineScope = rememberCoroutineScope(),
-        context = LocalContext.current
+        context = LocalContext.current,
+        changeJokerState
     )
 
     when (gameState) {
@@ -166,7 +174,10 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
             ) {
                 colorChanger.updateColors(numberOfTries, backgroundColorsList, fontColorsList)
                 //colorChanger.updateColors(numberOfTries, backgroundColorsList)
-                Column(modifier = Modifier.padding(top = 60.dp)) {
+                Column(
+                    modifier = Modifier.padding(top = 60.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     for (i in 0..4) {
                         textfieldTempl(
                             //true,
@@ -182,11 +193,13 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
                     }
 
                     Divider(
-                        modifier = Modifier.padding(0.dp, 10.dp), color = MaterialTheme.colorScheme.secondary, thickness = 2.dp
+                        modifier = Modifier.padding(0.dp, 10.dp), color = MaterialTheme.colorScheme.secondary, thickness = 4.dp
                     )
                     button("Guess", onClick = {
                         keyHandler.handleGuess(incrementColumnIndex, incrementNumberOfTries)
                     })
+                    Spacer(modifier = Modifier.size(30.dp))
+                    button(buttonText = "Joker", onClick = { keyHandler.handleJoker() }, isJokerEnabled)
                 }
             }
         GameState.LOST -> losingPanel(25, navController)

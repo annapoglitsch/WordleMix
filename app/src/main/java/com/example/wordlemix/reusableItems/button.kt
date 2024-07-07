@@ -1,6 +1,8 @@
 package com.example.wordlemix.reusableItems
 
 import android.content.res.Resources
+import android.graphics.Paint.Align
+import android.text.Layout.Alignment
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CutCornerShape
@@ -20,9 +22,10 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun button(buttonText: String, onClick: () -> Unit = {}) {
+fun button(buttonText: String, onClick: () -> Unit = {}, isEnabled: Boolean = true) {
     Button(
         onClick = onClick,
+        enabled = isEnabled,
         shape = CutCornerShape(10),
         elevation = ButtonDefaults.buttonElevation(
             defaultElevation = 10.dp,

@@ -33,7 +33,6 @@ import com.example.wordlemix.reusableItems.Headline
 import com.example.wordlemix.reusableItems.button
 import com.example.wordlemix.ui.theme.WordleMixTheme
 import com.example.wordlemix.viewModel.SharedViewModel
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

@@ -25,7 +25,8 @@ class KeyHandler(
     val db: PlayerDatabase,
     val repository: PlayerRepository,
     val coroutineScope: CoroutineScope,
-    val context: Context
+    val context: Context,
+    val setJokerState: () -> Unit
 ) {
 
     fun handleGuess(incrementColumnIndex: () -> Unit, incrementNumberOfTries: () -> Unit) {
@@ -70,5 +71,15 @@ class KeyHandler(
         }*/
 
         //colorChanger.updateColors(numberOfTries, backgroundColorsList)
+    }
+
+    fun handleJoker() {
+        val currentTextFieldList = textFieldLists[numberOfTries]
+        for (i in 0 until minOf(3, word.length)) {
+            currentTextFieldList[i] = word[i].toString()
+
+        }
+
+        setJokerState()
     }
 }
