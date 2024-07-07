@@ -49,7 +49,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.wordlemix.reusableItems.AppBars
 import com.example.wordlemix.viewModel.SharedViewModel
-import com.example.wordlemix.appbars.AppBars
 import com.example.wordlemix.game.GameLogic
 import com.example.wordlemix.game.KeyHandler
 import com.example.wordlemix.reusableItems.button

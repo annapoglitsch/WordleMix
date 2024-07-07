@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.wordlemix"
-        minSdk = 24
+        minSdk = 25
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -51,7 +51,7 @@ android {
 }
 
 dependencies {
-
+    implementation("androidx.wear.compose:compose-material:1.2.0")
     // versions
     val room_version = "2.6.1"
     // room dependencies

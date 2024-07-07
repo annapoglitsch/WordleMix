@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.wordlemix.PlayerPreferences
 import com.example.wordlemix.SharedViewModelFactory
 import com.example.wordlemix.data.Player
 import com.example.wordlemix.data.PlayerDAO
@@ -56,6 +57,15 @@ fun ScoreBoard(
     val coroutineScope = rememberCoroutineScope()
 
     insertSampleData(coroutineScope,db.playerDao())
+
+    val context = LocalContext.current
+
+    var playerPreferences: PlayerPreferences
+    playerPreferences = PlayerPreferences(context)
+
+    println("Hello1")
+    println(playerPreferences.getUsername())
+    println("Hello2")
 
     val topAppBar = AppBars()
     Surface(

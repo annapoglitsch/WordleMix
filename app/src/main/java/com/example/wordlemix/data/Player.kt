@@ -2,9 +2,10 @@ package com.example.wordlemix.data
 
 import androidx.room.Entity
 import androidx.room.Ignore
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(indices = [Index(value = ["username"], unique = true)])
 data class Player(
     @PrimaryKey(autoGenerate = true)
     val dbId: Long = 0,
