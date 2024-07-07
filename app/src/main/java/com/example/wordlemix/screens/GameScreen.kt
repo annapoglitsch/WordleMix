@@ -134,7 +134,10 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
         }
     }
 
-    var db = PlayerDatabase.getDatabase(LocalContext.current)
+    val db = PlayerDatabase.getDatabase(LocalContext.current)
+    val repository = PlayerRepository(playerDAO = db.playerDao())
+    val factory = SharedViewModelFactory(repository = repository)
+    val sharedViewModel : SharedViewModel = viewModel(factory = factory)
 
     var keyHandler = KeyHandler(
         word,
@@ -150,6 +153,7 @@ fun GameScreenStructure(gameLogic: GameLogic, word: String, navController: NavCo
         db = PlayerDatabase.getDatabase(LocalContext.current),
         repository = PlayerRepository(playerDAO = db.playerDao()),
         coroutineScope = rememberCoroutineScope(),
+        sharedViewModel = viewModel(factory = factory),
         context = LocalContext.current
     )
 

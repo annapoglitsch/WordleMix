@@ -51,7 +51,7 @@ fun StartScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 StartScreenStructure(navController)
-                initGuest()
+                initGuest(sharedViewModel)
             }
     }
 
@@ -82,7 +82,7 @@ fun StartScreenStructure(navController: NavController) {
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun initGuest() {
+fun initGuest(sharedViewModel: SharedViewModel) {
     val playerPreferences: PlayerPreferences = PlayerPreferences(LocalContext.current)
     //playerPreferences.saveUsername("")
     println(playerPreferences.getUsername())
@@ -95,13 +95,13 @@ fun initGuest() {
         playerPreferences.saveUsername("Guest")
         coroutineScope.launch {
             val existingPlayer: Player? = try {
-                repository.getByUsername("Guest")
+                sharedViewModel.getByUsername("Guest")
             } catch (e: Exception) {
                 null
             }
 
             if (existingPlayer == null) {
-                repository.addPlayer(Player(username = "Guest", record = 0))
+                sharedViewModel.addPlayer(Player(username = "Guest", record = 0))
             }
         }
     }

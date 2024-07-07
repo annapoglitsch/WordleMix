@@ -19,7 +19,6 @@ class SharedViewModel(private val repository: PlayerRepository) : ViewModel() {
     private val _players = MutableStateFlow(listOf<Player>())
     val players: StateFlow<List<Player>> = _players.asStateFlow()
 
-
     init{
         viewModelScope.launch {
             repository.getAllPlayers().collect(){playersList ->
@@ -27,7 +26,6 @@ class SharedViewModel(private val repository: PlayerRepository) : ViewModel() {
             }
         }
     }
-
 
     suspend fun toggleDoneState(player: Player){
         viewModelScope.launch {
@@ -44,35 +42,23 @@ class SharedViewModel(private val repository: PlayerRepository) : ViewModel() {
     }
 
     suspend fun addPlayer(player: Player){
-        viewModelScope.launch {
-            repository.addPlayer(player)
-        }
+        repository.addPlayer(player)
     }
 
     suspend fun deletePlayer(player: Player){
-        viewModelScope.launch {
-            repository.deletePlayer(player)
-        }
+        repository.deletePlayer(player)
     }
 
     suspend fun updatePlayer(player: Player){
-        viewModelScope.launch {
-            repository.updatePlayer(player)
-        }
+        repository.updatePlayer(player)
     }
 
     suspend fun getByUsername(username: String): Player{
-        var player : Player
-        player = Player(username="error", record = 1)
-        viewModelScope.launch {
-            player = repository.getByUsername(username)
-        }
+        var player : Player = repository.getByUsername(username)
         return player
     }
 
     suspend fun getPlayerById(id: Int){
-        viewModelScope.launch {
-            repository.getById(id)
-        }
+        repository.getById(id)
     }
 }

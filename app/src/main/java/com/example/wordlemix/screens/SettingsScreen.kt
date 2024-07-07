@@ -105,7 +105,7 @@ fun SettingsScreen(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    UsernameSettingInput(sharedViewModel,repository)
+                    UsernameSettingInput(sharedViewModel)
                     Spacer(modifier = Modifier.size(20.dp))
                     button(buttonText = "ScoreBoard", onClick = {navController.navigate(ScreenRoutes.ScoreBoardScreen.route) })
                     Spacer(modifier = Modifier.size(20.dp))
@@ -122,7 +122,7 @@ fun SettingsScreen(
 }
 
 @Composable
-fun UsernameSettingInput(sharedViewModel: SharedViewModel,repository: PlayerRepository) {
+fun UsernameSettingInput(sharedViewModel: SharedViewModel) {
     var text by remember { mutableStateOf("") }
 
     val context = LocalContext.current
@@ -139,7 +139,7 @@ fun UsernameSettingInput(sharedViewModel: SharedViewModel,repository: PlayerRepo
         TextField(
             value = inputText,
             onValueChange = { inputText = it },
-            //label = { Text(username) },
+            label = { Text("Enter Username") },
             //modifier = Modifier.height(30.dp),
         )
         Text(
@@ -153,8 +153,9 @@ fun UsernameSettingInput(sharedViewModel: SharedViewModel,repository: PlayerRepo
                 playerPreferences.saveUsername(inputText)
                 username = inputText
                 coroutineScope.launch {
-                    if (playerPreferences.getUsername()?.let { repository.getByUsername(it) } == null)
-                        repository.addPlayer(Player(username = playerPreferences.getUsername()!!, record = 0))
+                    if (playerPreferences.getUsername()?.let { sharedViewModel.getByUsername(it) } == null){
+                        sharedViewModel.addPlayer(Player(username = playerPreferences.getUsername()!!, record = 0))
+                    }
                 }
             }
         )

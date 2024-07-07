@@ -90,13 +90,13 @@ class GameLogic {
  }
 
 
- fun receiveScore(gameState: GameState, coroutineScope: CoroutineScope, context: Context,repository:PlayerRepository) {
+ fun receiveScore(gameState: GameState, coroutineScope: CoroutineScope, context: Context,sharedViewModel: SharedViewModel,repository:PlayerRepository) {
      var player: Player;
      player = Player(username = "test", record = 1)
      val playerPreferences: PlayerPreferences = PlayerPreferences(context)
 
      coroutineScope.launch {
-         player = repository.getByUsername(playerPreferences.getUsername()!!)
+         player = sharedViewModel.getByUsername(playerPreferences.getUsername()!!)
 
      if (gameState == GameState.WON){
              player.record += 25
@@ -108,7 +108,7 @@ class GameLogic {
              player.record -= 25
          }
      }
-         repository.updatePlayer(player)
+         sharedViewModel.updatePlayer(player)
      }
  }
 }

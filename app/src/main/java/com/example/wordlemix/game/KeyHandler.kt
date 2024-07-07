@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.wordlemix.data.PlayerDatabase
 import com.example.wordlemix.data.PlayerRepository
+import com.example.wordlemix.viewModel.SharedViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlin.math.absoluteValue
 
@@ -25,6 +26,7 @@ class KeyHandler(
     val db: PlayerDatabase,
     val repository: PlayerRepository,
     val coroutineScope: CoroutineScope,
+    val sharedViewModel: SharedViewModel,
     val context: Context
 ) {
 
@@ -58,7 +60,7 @@ class KeyHandler(
         //numberOfTries++
         incrementNumberOfTries()
         setGameState(gameLogic.getGameState(numberOfTries, guess, word))
-        gameLogic.receiveScore(gameLogic.getGameState(numberOfTries, guess, word), coroutineScope, context, repository)
+        gameLogic.receiveScore(gameLogic.getGameState(numberOfTries, guess, word), coroutineScope, context, sharedViewModel ,repository)
         /*if (enabledColumnIndex < 4) {
             enabledColumnIndex++
         }*/
