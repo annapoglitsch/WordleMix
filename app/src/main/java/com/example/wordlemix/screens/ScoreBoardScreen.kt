@@ -20,26 +20,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.edit
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.wordlemix.PlayerPreferences
-import com.example.wordlemix.SharedViewModelFactory
-import com.example.wordlemix.data.Player
-import com.example.wordlemix.data.PlayerDAO
 import com.example.wordlemix.data.PlayerDatabase
-import com.example.wordlemix.data.PlayerRepository
 import com.example.wordlemix.reusableItems.AppBars
 import com.example.wordlemix.ui.theme.WordleMixTheme
 import com.example.wordlemix.viewModel.SharedViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.onEmpty
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
 
 private const val PREFS_NAME = "sample_data_prefs"
 private const val KEY_DATA_INSERTED = "data_inserted"

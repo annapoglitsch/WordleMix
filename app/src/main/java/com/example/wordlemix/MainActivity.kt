@@ -7,26 +7,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.pm.ShortcutInfoCompat.Surface
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wordlemix.data.Player
 import com.example.wordlemix.data.PlayerDatabase
 import com.example.wordlemix.data.PlayerRepository
 import com.example.wordlemix.navigation.Navigation
-import com.example.wordlemix.ui.theme.WordleMixTheme
-import com.example.wordlemix.viewModel.SharedViewModel
-
-import dagger.hilt.android.AndroidEntryPoint
-
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 

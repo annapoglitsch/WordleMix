@@ -1,23 +1,11 @@
 package com.example.wordlemix.game
 
 import android.content.Context
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardCapitalization.Companion.Words
-import androidx.compose.ui.text.toUpperCase
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wordlemix.PlayerPreferences
-import com.example.wordlemix.SharedViewModelFactory
 import com.example.wordlemix.data.Player
-import com.example.wordlemix.data.PlayerDatabase
 import com.example.wordlemix.data.PlayerRepository
-import com.example.wordlemix.data.getPlayers
-import com.example.wordlemix.viewModel.SharedViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import java.io.File
-import java.nio.file.Path
 import kotlin.random.Random
 
 class GameLogic {

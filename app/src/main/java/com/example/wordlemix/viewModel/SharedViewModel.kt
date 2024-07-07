@@ -1,18 +1,11 @@
 package com.example.wordlemix.viewModel
-
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.wordlemix.PlayerPreferences
 import com.example.wordlemix.data.Player
 import com.example.wordlemix.data.PlayerRepository
-import com.example.wordlemix.game.RetrofitInstance
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SharedViewModel(private val repository: PlayerRepository) : ViewModel() {

@@ -1,15 +1,11 @@
 package com.example.wordlemix.game
 
 import android.content.Context
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import com.example.wordlemix.data.PlayerDatabase
 import com.example.wordlemix.data.PlayerRepository
 import kotlinx.coroutines.CoroutineScope
-import kotlin.math.absoluteValue
 
 class KeyHandler(
     val word: String,
