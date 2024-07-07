@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.wordlemix.PlayerPreferences
 import com.example.wordlemix.data.Player
 import com.example.wordlemix.data.PlayerRepository
+import com.example.wordlemix.game.RetrofitInstance
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,6 +19,7 @@ class SharedViewModel(private val repository: PlayerRepository) : ViewModel() {
     private val _players = MutableStateFlow(listOf<Player>())
     val players: StateFlow<List<Player>> = _players.asStateFlow()
 
+
     init{
         viewModelScope.launch {
             repository.getAllPlayers().collect(){playersList ->
@@ -25,6 +27,7 @@ class SharedViewModel(private val repository: PlayerRepository) : ViewModel() {
             }
         }
     }
+
 
     suspend fun toggleDoneState(player: Player){
         viewModelScope.launch {

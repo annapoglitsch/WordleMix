@@ -16,9 +16,12 @@ import com.example.wordlemix.screens.ScoreBoard
 import com.example.wordlemix.screens.SettingsScreen
 import com.example.wordlemix.screens.StartScreen
 import com.example.wordlemix.viewModel.SharedViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
-fun Navigation() {
+fun Navigation(coroutineScope: CoroutineScope) {
     val navController = rememberNavController()
 
     val db = PlayerDatabase.getDatabase(LocalContext.current)

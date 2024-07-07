@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
                             repository.addPlayer(Player(username = "Tom", record = 1400))
                         }
                     }
-                    Navigation()
+                    Navigation(coroutineScope)
                 }
         }
     }
